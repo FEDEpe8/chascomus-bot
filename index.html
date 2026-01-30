@@ -60,7 +60,7 @@
 
 <header>
     <div style="display:flex; align-items:center;">
-        <img src="logo.png" class="header-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/912/912214.png'">
+        <img src="logo.png" class="header-logo" onerror="this.src='logo.jpg'; this.onerror=null;">
         <span class="header-title">MuniBot Chascomús</span>
     </div>
     <button class="btn-exit" onclick="clearSession()">Salir</button>
@@ -87,6 +87,7 @@
             title: (name) => `¡Hola <b>${name}</b>! 👋 Soy el asistente virtual de Chascomús. ¿En qué puedo ayudarte?`, 
             options: [
                 { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
+                { id: 'desarrollo_menu', label: '🤝 Acción Social' }, // <--- ¡AQUÍ ESTÁ EL BOTÓN QUE FALTABA!
                 { id: 'turismo', label: '🏖️ Turismo' },
                 { id: 'deportes', label: '⚽ Deportes' },
                 { id: 'salud', label: '🏥 Salud' },
@@ -287,7 +288,7 @@
             return;
         }
 
-        // Link externo (Arreglo para botones que no abrían)
+        // Link externo
         if (opt.link) {
             window.open(opt.link, '_blank');
             return;
@@ -306,7 +307,7 @@
             const content = RES[opt.apiKey] || "Información no disponible.";
             setTimeout(() => {
                 addMessage(content, 'bot');
-                showNavControls(); 
+                showNavControls(); // Mostrar botones Volver/Inicio al final
             }, 500);
             return;
         }
@@ -342,7 +343,7 @@
         container.scrollTop = container.scrollHeight;
     }
 
-    /* --- FORMULARIO 147 --- */
+    /* --- FORMULARIO 147 ESTILO RRHH --- */
     function startReclamoForm() {
         isAwaitingForm = true;
         currentFormStep = 1;
