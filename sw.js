@@ -1,4 +1,4 @@
-const CACHE_NAME = 'muni-chascomus-v3'; // <--- ESTO FUERZA LA ACTUALIZACIÓN
+const CACHE_NAME = 'muni-chascomus-v5'; // <--- ESTO FUERZA LA ACTUALIZACIÓN
 const urlsToCache = [
   './',
   './index.html',
