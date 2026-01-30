@@ -6,7 +6,7 @@
     <title>MuniBot Chascomús</title>
     <meta name="theme-color" content="#004a7c">
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="icon" type="image/png" href="logo.png">
     
     <style>
         /* --- ESTILO RRHH (Azul y Verde) --- */
@@ -16,7 +16,7 @@
         
         /* HEADER */
         header { background: var(--primary); color: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .header-logo { height: 40px; width: 40px; border-radius: 50%; background: white; padding: 2px; }
+        .header-logo { height: 40px; width: 40px; border-radius: 50%; background: white; padding: 2px; object-fit: contain; }
         .header-title { font-weight: bold; font-size: 1rem; margin-left: 10px; }
         .btn-exit { background:rgba(255,255,255,0.2); border:none; color:white; border-radius:4px; padding:5px 10px; font-size:0.75rem; cursor: pointer; }
 
@@ -60,7 +60,7 @@
 
 <header>
     <div style="display:flex; align-items:center;">
-        <img src="logo.jpg" class="header-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/912/912214.png'">
+        <img src="logo.png" class="header-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/912/912214.png'">
         <span class="header-title">MuniBot Chascomús</span>
     </div>
     <button class="btn-exit" onclick="clearSession()">Salir</button>
@@ -77,13 +77,11 @@
     /* --- CONFIGURACIÓN --- */
     let userName = localStorage.getItem('muni_user_name') || "";
     let currentPath = ['main'];
-    
-    // Variables Formulario 147
     let isAwaitingForm = false;
     let currentFormStep = 0;
     let formData = { tipo: "", ubicacion: "", descripcion: "" };
 
-    /* --- MENÚS (Estructura de Botones) --- */
+    /* --- MENÚS --- */
     const MENUS = {
         main: { 
             title: (name) => `¡Hola <b>${name}</b>! 👋 Soy el asistente virtual de Chascomús. ¿En qué puedo ayudarte?`, 
@@ -191,72 +189,29 @@
 
     /* --- RESPUESTAS (Base de Datos HTML) --- */
     const RES = {
-        // --- TURISMO Y DEPORTES ---
         'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
         'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
         'deportes_circuito': `<div class="info-card"><strong>🏃 Circuito de Calle</strong><br>Inscripciones, cronograma y resultados oficiales.<br>🔗 <a href="https://apps.chascomus.gob.ar/deportes/circuitodecalle/" target="_blank">IR A LA WEB</a></div>`,
-
-        // --- SEGURIDAD ---
         'seg_academia': `<div class="info-card"><strong>🚗 Academia de Conductores</strong><br>Turnos para cursos y exámenes teóricos.<br>🔗 <a href="https://apps.chascomus.gob.ar/academia/" target="_blank">INGRESAR A LA WEB</a></div>`,
         'seg_medido': `<div class="info-card"><strong>🅿️ Estacionamiento Medido</strong><br>Gestioná tu estacionamiento desde el celular.<br><br>📲 <b>Descargar App:</b><br>🤖 <a href="https://play.google.com/store/apps/details?id=ar.edu.unlp.sem.mobile.chascomus" target="_blank">Android (Google Play)</a><br>🍎 <a href="https://apps.apple.com/ar/app/sem-mobile/id1387705895" target="_blank">iPhone (App Store)</a><br><br>💻 <a href="https://chascomus.gob.ar/estacionamientomedido/" target="_blank">Gestión vía Web</a></div>`,
         'lic_turno': `<b>📅 Turno Licencia:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/academia/">SOLICITAR TURNO</a>`, 
         'seg_infracciones': `<b>⚖️ Infracciones:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaInfracciones">VER MIS MULTAS</a>`, 
         'ojos': `👁️ <b>Ojos en Alerta:</b> <a href="https://wa.me/5492241557444">2241-557444</a>`,
         'poli': `📞 <b>Policía:</b> 42-2222 | 🎥 <b>COM:</b> 43-1333`,
-
-        // --- GÉNERO ---
-        'politicas_gen': `
-        <div class="info-card" style="border-left: 5px solid #9b59b6;">
-            <strong style="color: #8e44ad; font-size: 1rem;">💜 Género y Diversidad</strong><br><br>
-            <div style="font-size: 0.85rem; margin-bottom: 12px;">
-                🚨 <b>Guardia 24/7:</b> Orientación y acompañamiento en casos de violencia.<br>
-                🧠 <b>Equipo Técnico:</b> Abogadas, psicólogas y trabajadoras sociales.<br>
-                🏠 <b>Hogar de Tránsito:</b> Alojamiento temporal para mujeres en riesgo.<br>
-                🗣️ <b>Varones:</b> Espacio de abordaje y deconstrucción de conductas violentas.<br>
-                👮‍♀️ <b>Articulación:</b> Trabajo conjunto con Comisaría de la Mujer.
-            </div>
-            <div style="background: #fdf2ff; padding: 10px; border-radius: 8px; font-size: 0.9rem;">
-                📍 <b>Oficina:</b> Moreno 259 (Lun-Vie 9-14hs)<br>
-                ☎️ <b>Fijo Oficina:</b> <a href="tel:02241530448">2241-530448</a><br>
-                🚓 <b>Comisaría Mujer:</b> <a href="tel:02241422653">42-2653</a>
-            </div>
-            <a href="https://wa.me/5492241559397" target="_blank" class="wa-btn" style="background-color: #8e44ad !important;">🚨 GUARDIA 24HS (WhatsApp)</a>
-        </div>`,
-
-        // --- DESARROLLO SOCIAL ---
-        'asistencia_social': `
-        <div class="info-card" style="border-left: 5px solid #e67e22;">
-            <strong style="color: #d35400;">🍎 Programa Alimentario (CAM)</strong><br><br>
-            📦 <b>RETIRO DE MÓDULOS:</b><br>
-            📍 <b>Lugar:</b> Depósito de calle Juárez.<br>
-            ⏰ <b>Horario:</b> 8:00 a 14:00 hs.<br><br>
-            📋 <b>Requisitos:</b><br>
-            • Presentar DNI (Obligatorio).<br>
-            • Documentación de salud/social (ej: Celíacos) si corresponde.<br><br>
-            🏢 <b>Atención Social General:</b><br>
-            Para entrevistas o trámites: Moreno 259.<br><br>
-            📞 <b>CONSULTAS Y CRONOGRAMA:</b><br>
-            Te recomendamos confirmar tu fecha antes de ir:<br>
-            <a href="https://wa.me/5492241559397" class="wa-btn" style="background-color: #d35400 !important;">📲 WhatsApp Guardia</a>
-        </div>`,
+        'politicas_gen': `<div class="info-card" style="border-left: 5px solid #9b59b6;"><strong style="color: #8e44ad; font-size: 1rem;">💜 Género y Diversidad</strong><br><br><div style="font-size: 0.85rem; margin-bottom: 12px;">🚨 <b>Guardia 24/7:</b> Orientación y acompañamiento en casos de violencia.<br>🧠 <b>Equipo Técnico:</b> Abogadas, psicólogas y trabajadoras sociales.<br>🏠 <b>Hogar de Tránsito:</b> Alojamiento temporal para mujeres en riesgo.<br>🗣️ <b>Varones:</b> Espacio de abordaje y deconstrucción de conductas violentas.<br>👮‍♀️ <b>Articulación:</b> Trabajo conjunto con Comisaría de la Mujer.</div><div style="background: #fdf2ff; padding: 10px; border-radius: 8px; font-size: 0.9rem;">📍 <b>Oficina:</b> Moreno 259 (Lun-Vie 9-14hs)<br>☎️ <b>Fijo Oficina:</b> <a href="tel:02241530448">2241-530448</a><br>🚓 <b>Comisaría Mujer:</b> <a href="tel:02241422653">42-2653</a></div><a href="https://wa.me/5492241559397" target="_blank" class="wa-btn" style="background-color: #8e44ad !important;">🚨 GUARDIA 24HS (WhatsApp)</a></div>`,
+        'asistencia_social': `<div class="info-card" style="border-left: 5px solid #e67e22;"><strong style="color: #d35400;">🍎 Programa Alimentario (CAM)</strong><br><br>📦 <b>RETIRO DE MÓDULOS:</b><br>📍 <b>Lugar:</b> Depósito de calle Juárez.<br>⏰ <b>Horario:</b> 8:00 a 14:00 hs.<br><br>📋 <b>Requisitos:</b><br>• Presentar DNI (Obligatorio).<br>• Documentación de salud/social (ej: Celíacos) si corresponde.<br><br>🏢 <b>Atención Social General:</b><br>Para entrevistas o trámites: Moreno 259.<br><br>📞 <b>CONSULTAS Y CRONOGRAMA:</b><br>Te recomendamos confirmar tu fecha antes de ir:<br><a href="https://wa.me/5492241559397" class="wa-btn" style="background-color: #d35400 !important;">📲 WhatsApp Guardia</a></div>`,
         'mediacion_info': `<strong>⚖️ Mediación:</strong><br>📍 Moreno Nº 259.`,
         'uda_info': `<strong>📍 Puntos UDA:</strong> Descentralización en barrios.`,
         'tierra_vivienda': `<b>🔑 Tierra y Vivienda:</b> Dorrego y Bolívar.`,
         'ninez': `<b>👶 Niñez:</b> Mendoza Nº 95. 📞 43-1146.`,
-
-        // --- 147 y OBRAS ---
         'link_147': `<div class="info-card"><strong>📝 ATENCIÓN AL VECINO 147</strong><br>🌐 <a href="https://147.chascomus.gob.ar/index.php?a=add" target="_blank">Cargar Ticket Online</a><br>📞 <a href="tel:147">Llamar al 147</a></div>`,
         'poda': `🌿 <a href="https://apps.chascomus.gob.ar/podaresponsable/solicitud.php">Solicitud Poda</a>`,
         'obras_basura': `♻️ <b>Recolección:</b><br>Lun a Sáb 20hs (Húmedos)<br>Jueves 14hs (Reciclables)`,
-
-        // --- HACIENDA ---
         'hac_boleta': `<div class="info-card"><strong>📧 BOLETA DIGITAL</strong><br>🟢 WA: <a href="https://wa.me/5492241559739">2241-559739</a><br>📧 <a href="mailto:ingresospublicos@chascomus.gob.ar">Email</a></div>`,
         'hac_tomasa': `<b>🤖 Hacienda Tomasa:</b><br>Portal de autogestión.<br>🔗 <a href="https://tomasa.chascomus.gob.ar/">INGRESAR</a>`, 
         'hac_agua': `<b>💧 Consumo de Agua:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
         'hac_deuda': `<b>🔍 Consulta de Deuda:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas">CONSULTAR AQUÍ</a>`,
         'hac_hab': `🚀 <b>Habilitación Comercial:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php">Iniciar Trámite</a>`,
-
-        // --- SALUD ---
         'farmacias_lista': `<strong>📍 Farmacias en Chascomús:</strong><br><br>• <b>Alfonsín:</b> Libres del Sur 121<br>• <b>Aprile:</b> Av. Lastra 115<br>• <b>Batastini:</b> Cramer 70<br>• <b>Belgrano:</b> Belgrano 649<br>• <b>Bellingieri:</b> H. Yrigoyen 78<br>• <b>Cangialosi:</b> Garay 56<br>• <b>Chascomús:</b> Av. Lastra 350<br>• <b>Del Norte:</b> El Ombú 102<br>• <b>Farmasur:</b> Bahía Blanca 91<br>• <b>Malena:</b> Escribano y Machado<br>• <b>Moriset:</b> Av. Lastra 591<br>• <b>Oria:</b> Libres del Sur 413<br>• <b>Pasteur:</b> Libres del Sur 302<br>• <b>Pensa:</b> H. Yrigoyen 710<br>• <b>Pozzi:</b> Rioja 28<br>• <b>Puyssegur:</b> Libres del Sur 946<br><br><i>* Nota: Usá la opción "Turnos" para confirmar la guardia.</i>`,
         'caps_wa': `<strong>📞 WhatsApp de los CAPS:</strong><br><br>🟢 <b>30 de Mayo:</b> <a href="https://wa.me/5492241588248">2241-588248</a><br>🟢 <b>Barrio Jardín:</b> <a href="https://wa.me/5492241498087">2241-498087</a><br>🟢 <b>San Luis:</b> <a href="https://wa.me/5492241604874">2241-604874</a><br>🟢 <b>El Porteño:</b> <a href="https://wa.me/5492241409316">2241-409316</a><br>🟢 <b>Gallo Blanco:</b> <a href="https://wa.me/5492241469267">2241-469267</a><br>🟢 <b>Iporá:</b> <a href="https://wa.me/5492241588247">2241-588247</a><br>🟢 <b>La Noria:</b> <a href="https://wa.me/5492241604872">2241-604872</a><br>🟢 <b>San Cayetano:</b> <a href="https://wa.me/5492241511430">2241-511430</a>`,
         'caps_mapas': `<strong>📍 Ubicaciones CAPS:</strong><br><br>• CIC 30 de Mayo (Bvd. 5 y Calle 2)<br>• Barrio Jardín (Tucumán e/ Quintana)<br>• San Luis (Chubut 755)<br>• El Porteño (Lucio Mansilla)<br>• Gallo Blanco (Estados Unidos)<br>• Iporá (Sargento Cabral 387)<br>• La Noria (Grito de Dolores)<br>• San Cayetano (Gabino Ezeiza)`,
@@ -332,7 +287,7 @@
             return;
         }
 
-        // Link externo
+        // Link externo (Arreglo para botones que no abrían)
         if (opt.link) {
             window.open(opt.link, '_blank');
             return;
@@ -351,7 +306,7 @@
             const content = RES[opt.apiKey] || "Información no disponible.";
             setTimeout(() => {
                 addMessage(content, 'bot');
-                showNavControls(); // Mostrar botones Volver/Inicio al final
+                showNavControls(); 
             }, 500);
             return;
         }
@@ -364,14 +319,11 @@
     }
 
     function showMenu(key) {
-        // Escondemos barra de input si estamos navegando menús
         toggleInput(false); 
         const menu = MENUS[key];
         const title = typeof menu.title === 'function' ? menu.title(userName) : menu.title;
         
-        // Clonamos opciones
         let opts = [...menu.options];
-        // Opcional: Agregar "Volver" en la lista de opciones (además de los botones finales)
         if (currentPath.length > 1) opts.push({ id: 'back', label: '⬅️ Volver' });
         
         setTimeout(() => addMessage(title, 'bot', opts), 400);
@@ -390,11 +342,11 @@
         container.scrollTop = container.scrollHeight;
     }
 
-    /* --- FORMULARIO 147 ESTILO RRHH --- */
+    /* --- FORMULARIO 147 --- */
     function startReclamoForm() {
         isAwaitingForm = true;
         currentFormStep = 1;
-        toggleInput(true); // Mostrar teclado
+        toggleInput(true); 
         setTimeout(() => addMessage("📝 <b>Paso 1/3:</b> ¿Qué tipo de problema es? (Ej: Luminaria, Basura)", 'bot'), 500);
     }
 
@@ -416,7 +368,6 @@
     function finalizeForm() {
         isAwaitingForm = false;
         toggleInput(false);
-        // Número WhatsApp 147 (Genérico)
         const tel147 = "5492241559397"; 
         const msg = `🏛️ *RECLAMO 147* 🏛️%0A👤 *Vecino:* ${userName}%0A🏷️ *Tipo:* ${formData.tipo}%0A📍 *Ubicación:* ${formData.ubicacion}%0A📝 *Desc:* ${formData.descripcion}`;
         const url = `https://wa.me/${tel147}?text=${msg}`;
@@ -438,7 +389,6 @@
         const val = input.value.trim();
         if(!val) return;
 
-        // Si estamos en formulario
         if (isAwaitingForm) {
             addMessage(val, 'user');
             input.value = "";
@@ -446,7 +396,6 @@
             return;
         }
 
-        // Si es login (nombre)
         if (!userName) {
             addMessage(val, 'user');
             userName = val;
@@ -454,7 +403,6 @@
             input.value = "";
             showMenu('main');
         } else {
-            // Chat libre (fallback)
             addMessage(val, 'user');
             input.value = "";
             setTimeout(() => addMessage("Por favor, utilizá los botones del menú para navegar.", 'bot'), 600);
@@ -485,7 +433,6 @@
         }
     };
 
-    // PWA Support
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
     }
