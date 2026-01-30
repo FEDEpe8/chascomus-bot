@@ -127,20 +127,10 @@
         ]
     },
         cultura: {
-            title: () => '🎭 Agenda Cultural 2026:',
+            title: () => '🎭 Agenda Cultural:',
             options: [
-                { id: 'ag_ene', label: '📅 Enero', type: 'leaf', apiKey: 'agenda_ene' },
-                { id: 'ag_feb', label: '📅 Febrero', type: 'leaf', apiKey: 'agenda_feb' },
-                { id: 'ag_mar', label: '📅 Marzo', type: 'leaf', apiKey: 'agenda_mar' },
-                { id: 'ag_abr', label: '📅 Abril', type: 'leaf', apiKey: 'agenda_abr' },
-                { id: 'ag_may', label: '📅 Mayo', type: 'leaf', apiKey: 'agenda_may' },
-                { id: 'ag_jun', label: '📅 Junio', type: 'leaf', apiKey: 'agenda_jun' },
-                { id: 'ag_jul', label: '📅 Julio', type: 'leaf', apiKey: 'agenda_jul' },
-                { id: 'ag_ago', label: '📅 Agosto', type: 'leaf', apiKey: 'agenda_ago' },
-                { id: 'ag_sep', label: '📅 Septiembre', type: 'leaf', apiKey: 'agenda_sep' },
-                { id: 'ag_oct', label: '📅 Octubre', type: 'leaf', apiKey: 'agenda_oct' },
-                { id: 'ag_nov', label: '📅 Noviembre', type: 'leaf', apiKey: 'agenda_nov' },
-                { id: 'ag_dic', label: '📅 Diciembre', type: 'leaf', apiKey: 'agenda_dic' },
+                { id: 'ag_actual', label: '📅 Agenda del Mes (FEBRERO)', type: 'leaf', apiKey: 'agenda_actual' },
+                { id: 'ag_drive', label: '📂 Ver programación anual (Drive)', link: 'https://drive.google.com/drive/folders/1VgidPwJ_Hg-n_ECGj5KzLlM-58OEdJBP' }
             ]
         },
         turismo: {
@@ -256,61 +246,60 @@
 
     /* --- RESPUESTAS (Base de Datos HTML) --- */
     const RES = {
-        'agenda_feb': `
+        'agenda_actual': `
         <div class="info-card">
-            <strong>📅 Agenda Febrero 2026</strong><br><br>
-            🌕 <b>Sáb 1/2 - Remada Luna Llena:</b><br>
-            Kayak & Tablas al atardecer. Club de Pesca y Náutica. (Horario a confirmar).<br><br>
-            🎬 <b>Vie 6/2 - Audiovisual:</b><br>
-            "Mis imágenes diarias". C.C. Vieja Estación, 21hs.<br><br>
-            🎭 <b>Sáb 7/2 - Teatro:</b><br>
-            "Amores y Desamores". Casa de Casco, 21hs. ($18.000).<br><br>
-            🧘 <b>Miércoles - Yoga Vital:</b><br>
-            18:30hs en Paseo de los Inmigrantes (Gratis).</div>`,
+            <strong>📅 AGENDA FEBRERO 2026</strong><br>
+            <i>¡Disfrutá el verano en Chascomús!</i><br><br>
 
-        'agenda_mar': `
-        <div class="info-card">
-            <strong>📅 Agenda Marzo 2026</strong><br><br>
-            🎭 <b>Visitas Guiadas Dramatizadas:</b><br>
-            En Casa de Casco y Vieja Estación (Fechas a confirmar).<br><br>
-            🏛️ <b>Espacios Permanentes:</b><br>
-            • Museo Pampeano (Mar-Vie 9-15)<br>
-            • Vieja Estación (Lun-Vie 9-15)<br>
-            • Casa de Casco (9-15, Miér cerrado)<br><br>
-            <i>Consultá la carpeta completa para más detalles.</i>
-        </div>`, /* --- AGENDA CULTURAL 2026 --- */
-        'agenda_ene': `<div class="info-card"><strong>📅 Agenda Enero</strong><br><br>ℹ️ <i>Eventos finalizados.</i></div>`,
-        
-        'agenda_feb': `
-        <div class="info-card">
-            <strong>📅 Agenda Febrero 2026</strong><br><br>
-            🌕 <b>Sáb 1/2 - Remada Luna Llena:</b><br>
-            Kayak & Tablas al atardecer. Club de Pesca y Náutica.<br><br>
-            🎬 <b>Vie 6/2 - Audiovisual:</b><br>
-            "Mis imágenes diarias". C.C. Vieja Estación, 21hs.<br><br>
-            🎭 <b>Sáb 7/2 - Teatro:</b><br>
-            "Amores y Desamores". Casa de Casco, 21hs.<br><br>
-            🧘 <b>Miércoles - Yoga Vital:</b><br>
-            18:30hs en Paseo de los Inmigrantes.
+            🌕 <b>Sáb 1 - Remada Luna Llena:</b><br>
+            Kayak & Tablas al atardecer.<br>
+            📍 Club de Pesca y Náutica. (Horario a confirmar).<br><br>
+
+            🎬 <b>Vie 6 - Audiovisual:</b><br>
+            "Mis imágenes diarias".<br>
+            📍 C.C. Vieja Estación | 21hs | Gratis.<br><br>
+
+            🎭 <b>Sáb 7 - Teatro:</b><br>
+            "Amores y Desamores".<br>
+            📍 Casa de Casco | 21hs | 🎟️ $18.000.<br><br>
+
+            🎂 <b>Sáb 7 - 90 Años Bellas Artes:</b><br>
+            Música en vivo y danza. Llevá tu reposera.<br>
+            📍 Mazzini y Lincoln | 19hs | Gratis.<br><br>
+
+            🏊 <b>Dom 8 - Triatlón Olímpico:</b><br>
+            Competencia de resistencia.<br>
+            📍 Paseo de los Inmigrantes | 8hs.<br><br>
+
+            🎉 <b>13, 14, 15 y 16 - CARNAVAL INFANTIL:</b><br>
+            Desfiles, música y color.<br>
+            📍 Corsódromo (Av. Alfonsín) | 20hs | Gratis.<br><br>
+
+            🏊 <b>Sáb 14 - Aguas Abiertas (3ra fecha):</b><br>
+            Carreras de 750m y 2500m.<br>
+            📍 Escalinatas Costanera | 12:00hs.<br><br>
+
+            🎭 <b>Sáb 21 - Teatro:</b><br>
+            Obra "El Acompañamiento".<br>
+            📍 Casa de Casco | 21hs | 🎟️ $18.000.<br><br>
+
+            🐴 <b>21 y 22 - Gran Fiesta Criolla:</b><br>
+            Jineteadas, desfiles y peña.<br>
+            📍 Fortín Chascomús (Ruta 20) | 13hs.<br><br>
+
+            🎭 <b>27 y 28 - Visitas Dramatizadas:</b><br>
+            Recorrido teatralizado histórico.<br>
+            📍 Vieja Estación | 21hs | 🎟️ $18.000.<br><br>
+
+            <hr style="border-top: 1px dashed #ccc; margin: 10px 0;">
+
+            🏛️🌅 <b>INSCRIPCIONES Y LINKS:</b><br>
+            Solicitá los formularios de inscripción para actividades:<br><br>
+            📲 <b>WhatsApp Turismo:</b><br>
+            <a href="https://wa.me/5492241603414" style="color:#25D366; font-weight:bold; text-decoration:none;">💬 2241-603414 (Clic aquí)</a><br><br>
+            🔗 <b>Linktree Inscripciones:</b><br>
+            <a href="https://linktr.ee/visitasguiadas.turismoch" target="_blank">Ingresar al Linktree</a>
         </div>`,
-
-        'agenda_mar': `
-        <div class="info-card">
-            <strong>📅 Agenda Marzo 2026</strong><br><br>
-            🎭 <b>Visitas Guiadas Dramatizadas:</b><br>
-            En Casa de Casco y Vieja Estación (Fechas a confirmar).<br><br>
-            🏛️ <b>Espacios Permanentes:</b><br>
-            Museo Pampeano, Vieja Estación y Casa de Casco.<br><br>`,
-
-        'agenda_abr': `<div class="info-card"><strong>📅 Agenda Abril</strong><br><br>ℹ️ <i>Cronograma a confirmar.</i><br>`,
-        'agenda_may': `<div class="info-card"><strong>📅 Agenda Mayo</strong><br><br>ℹ️ <i>Cronograma a confirmar.</i><br>`,
-        'agenda_jun': `<div class="info-card"><strong>📅 Agenda Junio</strong><br><br>ℹ️ <i>Cronograma a confirmar.</i><br>`,
-        'agenda_jul': `<div class="info-card"><strong>📅 Agenda Julio</strong><br><br>ℹ️ <i>Vacaciones de Invierno (A confirmar).</i></div>`,
-        'agenda_ago': `<div class="info-card"><strong>📅 Agenda Agosto</strong><br><br>ℹ️ <i>Cronograma a confirmar.</i><br>`,
-        'agenda_sep': `<div class="info-card"><strong>📅 Agenda Septiembre</strong><br><br>ℹ️ <i>Mes de la Primavera (A confirmar).</i></div>`,
-        'agenda_oct': `<div class="info-card"><strong>📅 Agenda Octubre</strong><br><br>ℹ️ <i>Cronograma a confirmar.</i><br>`,
-        'agenda_nov': `<div class="info-card"><strong>📅 Agenda Noviembre</strong><br><br>ℹ️ <i>Cronograma a confirmar.</i><br>`,
-        'agenda_dic': `<div class="info-card"><strong>📅 Agenda Diciembre</strong><br><br>ℹ️ <i>Cierre de año (A confirmar).</i></div>`,
         /* --- NUEVO: OMIC --- */
         'omic_info': `
         <div class="info-card">
@@ -505,7 +494,7 @@
         <div class="info-card">
             <strong>🍷 Registro de Alcohol (REBA)</strong><br><br>
             Obligatorio para comercializar bebidas alcohólicas.<br><br>
-            📲 <b>WhatsApp REBA:</b><br>
+            📲 <b>WhatsApp HABILITACIONES:</b><br>
             <a href="https://wa.me/5492241559389" class="wa-btn" style="background-color:#25D366 !important; text-align:center;">💬 2241-559389</a><br>
             <small><i>⚠️ Solo mensajes escritos o audios. No llamadas.</i></small><br><br>
             📧 <b>Por Email:</b><br>
