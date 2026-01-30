@@ -52,12 +52,6 @@
         .info-card { background: #eef6fc; padding: 15px; border-radius: 12px; border-left: 5px solid var(--primary); margin-top: 5px; font-size: 0.9rem; }
         .wa-btn { display: block; background-color: #25D366; color: white !important; padding: 12px; border-radius: 8px; text-decoration: none !important; font-weight: bold; margin-top: 10px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 
-        /* CONTROLES DE NAVEGACIÓN (VOLVER / HOME) */
-        .nav-controls { display: flex; gap: 10px; margin-top: 15px; width: 100%; }
-        .nav-btn { flex: 1; padding: 10px; border-radius: 20px; border: none; font-weight: bold; cursor: pointer; font-size: 0.85rem; }
-        .btn-back { background: #e0e0e0; color: #555; }
-        .btn-home { background: #e3f2fd; color: var(--primary); }
-
         /* MODAL DE INFORMACIÓN */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center; animation: fadeIn 0.2s; }
         .modal.show { display: flex; }
@@ -101,7 +95,7 @@
             Utiliza los botones del menú para navegar por las distintas secciones.
         </p>
         <div class="modal-credit">
-            <strong>Creado por:</strong> [FEDERICO PÉREZ SPERONI]<br>
+            <strong>Creado por:</strong> [TU NOMBRE]<br>
             para la Municipalidad de Chascomús
         </div>
     </div>
@@ -193,6 +187,8 @@
         seguridad: { 
             title: () => 'Seguridad y Trámites:', 
             options: [
+                { id: 'pamuv', label: '🆘 Asistencia Víctima (PAMUV)', type: 'leaf', apiKey: 'pamuv' }, /* NUEVO */
+                { id: 'basapp', label: '🔔 Basapp (Alerta)', type: 'leaf', apiKey: 'basapp' }, /* NUEVO */
                 { id: 'lic_tramite', label: '🪪 Licencia (Carnet)', type: 'leaf', apiKey: 'lic_turno' },
                 { id: 'seg_academia', label: '🚗 Academia Conductores', type: 'leaf', apiKey: 'seg_academia' },
                 { id: 'seg_infracciones', label: '⚖️ Mis Infracciones', type: 'leaf', apiKey: 'seg_infracciones' },
@@ -224,6 +220,16 @@
 
     /* --- RESPUESTAS (Base de Datos HTML) --- */
     const RES = {
+        'pamuv': `
+        <div class="info-card" style="border-left: 5px solid #c0392b;">
+            <strong style="color: #c0392b;">🆘 PAMUV (Asistencia a la Víctima)</strong><br><br>
+            Atención, contención y asesoramiento a personas víctimas de delitos o situaciones de violencia.<br><br>
+            🛡️ <b>Plan Integral de Seguridad 2025-2027</b><br><br>
+            🚨 <b>ATENCIÓN 24 HORAS:</b><br>
+            Línea permanente para emergencias o consultas.<br>
+            <a href="https://wa.me/5492241514881" class="wa-btn" style="background-color: #c0392b !important;">📞 2241-514881 (WhatsApp)</a>
+        </div>`,
+        'basapp': `<div class="info-card"><strong>🔔 Basapp - Alerta Vecinal</strong><br>Botón antipánico y reporte de seguridad en tu celular.<br><br>📲 <b>Descargar App:</b><br>🤖 <a href="https://play.google.com/store/apps/details?id=ar.com.basapp.android.client" target="_blank">Android (Google Play)</a><br>🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank">iPhone (App Store)</a></div>`,
         'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
         'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
         'deportes_circuito': `<div class="info-card"><strong>🏃 Circuito de Calle</strong><br>Inscripciones, cronograma y resultados oficiales.<br>🔗 <a href="https://apps.chascomus.gob.ar/deportes/circuitodecalle/" target="_blank">IR A LA WEB</a></div>`,
@@ -468,7 +474,7 @@
 
     window.onload = () => {
         if (!userName) {
-            addMessage("👋 Bienvenido al asistente de Chascomús.<br>Para comenzar, por favor <b>Ingres su Nombre</b>:", 'bot');
+            addMessage("👋 Bienvenido al asistente de Chascomús.<br>Para comenzar, por favor <b>ingresá tu nombre</b>:", 'bot');
             toggleInput(true);
         } else {
             showMenu('main');
