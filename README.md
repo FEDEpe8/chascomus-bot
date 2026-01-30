@@ -25,7 +25,7 @@
 
 El proyecto consta de 4 archivos esenciales:
 
-1.  **`index.html`**: Contiene toda la estructura, el diseño (CSS estilo RRHH) y la lógica del chatbot (Base de datos `MENUS` y `RES`).
+1.  **`index.html`**: Contiene toda la estructura, el diseño (CSS) y la lógica del chatbot (Base de datos `MENUS` y `RES`).
 2.  **`sw.js`**: Service Worker. Gestiona la caché para que la app funcione rápido y offline. **Clave para las actualizaciones.**
 3.  **`manifest.json`**: Archivo de configuración que permite instalar la web como App (define nombre, iconos y colores).
 4.  **`logo.png`**: El ícono de la aplicación (debe ser cuadrado, idealmente 512x512px).
