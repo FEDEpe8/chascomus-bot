@@ -219,13 +219,22 @@
         hacienda: { 
             title: () => 'Hacienda, Tasas y Producción:', 
             options: [
-                { id: 'produccion_menu', label: '🏭 Producción y Empleo', type: 'submenu' }, // <--- NUEVO
+                { id: 'produccion_menu', label: '🏭 Producción y Empleo', type: 'submenu' },
+                { id: 'hab_menu', label: '🏬 Habilitaciones (Menú)', type: 'submenu' }, /* <--- ESTA ES LA NUEVA */
                 { id: 'omic', label: '📢 OMIC (Defensa Consumidor)', type: 'leaf', apiKey: 'omic_info' },
                 { id: 'toma', label: '🤖 Hacienda Tomasa', type: 'leaf', apiKey: 'hac_tomasa' },
                 { id: 'deud', label: '🔍 Ver Deuda / Pagar', type: 'leaf', apiKey: 'hac_deuda' },
                 { id: 'hac_agua', label: '💧 Agua', type: 'leaf', apiKey: 'hac_agua' },
                 { id: 'boleta', label: '📧 Boleta Digital', type: 'leaf', apiKey: 'hac_boleta' },
-                { id: 'hab', label: '🏬 Habilitación', type: 'leaf', apiKey: 'hac_hab' }
+            ]
+        },
+        hab_menu: {
+            title: () => 'Gestión de Habilitaciones:',
+            options: [
+                { id: 'hab_gral', label: '🏢 Comercio e Industria', type: 'leaf', apiKey: 'hab_gral' },
+                { id: 'hab_eventos', label: '🎉 Eventos y Salones', type: 'leaf', apiKey: 'hab_eventos' },
+                { id: 'hab_espacio', label: '🍔 Patios y Carros (Foodtruck)', type: 'leaf', apiKey: 'hab_espacio' },
+                { id: 'hab_reba', label: '🍷 REBA (Alcohol)', type: 'leaf', apiKey: 'hab_reba' }
             ]
         },
         produccion_menu: {
@@ -441,7 +450,56 @@
         'hac_tomasa': `<b>🤖 Hacienda Tomasa:</b><br>Portal de autogestión.<br>🔗 <a href="https://tomasa.chascomus.gob.ar/">INGRESAR</a>`, 
         'hac_agua': `<b>💧 Consumo de Agua:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
         'hac_deuda': `<b>🔍 Consulta de Deuda:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas">CONSULTAR AQUÍ</a>`,
-        'hac_hab': `🚀 <b>Habilitación Comercial:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php">Iniciar Trámite</a>`,
+       /* --- HABILITACIONES --- */
+        'hab_gral': `
+        <div class="info-card">
+            <strong>🏢 Habilitación Comercial / Industrial</strong><br><br>
+            <i>Para comercios, industrias y servicios.</i><br><br>
+            📋 <b>Requisitos Principales:</b><br>
+            • DNI (Mayor de 21 años).<br>
+            • Constancia CUIT e IIBB.<br>
+            • Título Propiedad/Alquiler (Firmas certificadas).<br>
+            • Libre deuda Tasas Municipales.<br>
+            • Certificado Urbanístico.<br><br>
+            📍 <b>Presencial:</b> Maipú 415 (Producción).<br><br>
+            🚀 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php" target="_blank" class="wa-btn">INICIAR TRÁMITE ONLINE</a>
+        </div>`,
+
+        'hab_eventos': `
+        <div class="info-card">
+            <strong>🎉 Eventos y Salones de Fiesta</strong><br>
+            <i>Regulado por Ord. 5660, 5672 y 5923.</i><br><br>
+            ⚠️ <b>Plazos:</b><br>
+            Solicitar con <b>10 días hábiles</b> de anticipación.<br><br>
+            🚒 <b>Requisito Bomberos:</b><br>
+            Se exige certificado final de obra (Bomberos Dolores).<br>
+            📧 tecnica_dolores@hotmail.com<br>
+            📞 (02245) 44-6107<br><br>
+            📝 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php" target="_blank">IR AL FORMULARIO</a>
+        </div>`,
+
+        'hab_espacio': `
+        <div class="info-card">
+            <strong>🍔 Uso de Espacio Público</strong><br>
+            <i>Patios gastronómicos y Foodtrucks.</i><br><br>
+            📋 <b>Requisitos:</b><br>
+            • DNI y CUIT del titular.<br>
+            • Curso manipulación de alimentos (todo el personal).<br>
+            • Título del vehículo/carro.<br>
+            • Seguros (Vehículo + Responsabilidad Civil).<br>
+            • Domicilio en Chascomús.<br><br>
+            📝 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php" target="_blank">SOLICITAR PERMISO</a>
+        </div>`,
+
+        'hab_reba': `
+        <div class="info-card">
+            <strong>🍷 Registro de Alcohol (REBA)</strong><br><br>
+            Obligatorio para comercializar bebidas alcohólicas.<br><br>
+            📧 <b>¿Cómo se tramita?</b><br>
+            Solicitalo enviando un mail a:<br>
+            <a href="mailto:habilitaciones@chascomus.gob.ar">habilitaciones@chascomus.gob.ar</a><br><br>
+            🏦 <b>Pago:</b> Recibirás una boleta para abonar en Banco Provincia. Al día siguiente podés retirar el certificado.
+        </div>`,
         'h_turnos': `<strong>📅 Turnos Hospital:</strong><br>WhatsApp: <a href="https://wa.me/5492241466977">2241-466977</a>`,
         'h_info': `📍 <b>Hospital Municipal:</b> Av. Alfonsín e Yrigoyen.<br>🚨 Guardia 24 hs.`,
         'esp_lunes': `<b>🩺 Lunes:</b> Pediatría, Ginecología, Clínica Médica.`,
