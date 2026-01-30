@@ -165,6 +165,7 @@
             title: () => 'Seguridad y Trámites:', 
             options: [
                 { id: 'lic_tramite', label: '🪪 Licencia (Carnet)', type: 'leaf', apiKey: 'lic_turno' },
+                { id: 'seg_academia', label: '🚗 Academia Conductores', type: 'leaf', apiKey: 'seg_academia' }, // <--- NUEVA LÍNEA
                 { id: 'seg_infracciones', label: '⚖️ Mis Infracciones', type: 'leaf', apiKey: 'seg_infracciones' },
                 { id: 'seg_medido', label: '🅿️ Estacionamiento', type: 'leaf', apiKey: 'seg_medido' },
                 { id: 'ojos', label: '👁️ Ojos en Alerta', type: 'leaf', apiKey: 'ojos' },
@@ -211,12 +212,50 @@
         'hac_tomasa': `<b>🤖 Hacienda Tomasa:</b><br>Portal de autogestión.<br>🔗 <a href="https://tomasa.chascomus.gob.ar/">INGRESAR</a>`, 
         'hac_agua': `<b>💧 Consumo de Agua:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
         'hac_deuda': `<b>🔍 Consulta de Deuda:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas">CONSULTAR AQUÍ</a>`, 
-        'lic_turno': `<b>📅 Turno Licencia:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/academia/">SOLICITAR TURNO</a>`, 
+        'lic_turno': `<b>📅 Turno Licencia:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/academia/">SOLICITAR TURNO</a>`,
+        'seg_academia': `<div class="info-card"><strong>🚗 Academia de Conductores</strong><br>Turnos para cursos y exámenes teóricos.<br>🔗 <a href="https://apps.chascomus.gob.ar/academia/" target="_blank">INGRESAR A LA WEB</a></div>`,
         'seg_infracciones': `<b>⚖️ Infracciones:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaInfracciones">VER MIS MULTAS</a>`, 
-        'seg_medido': `<b>🅿️ Estacionamiento:</b><br>🔗 <a href="https://chascomus.gob.ar/estacionamientomedido/">GESTIONAR SEM</a>`, 
+        'seg_medido': `<div class="info-card"><strong>🅿️ Estacionamiento Medido</strong><br>Gestioná tu estacionamiento desde el celular.<br><br>📲 <b>Descargar App:</b><br>🤖 <a href="https://play.google.com/store/apps/details?id=ar.edu.unlp.sem.mobile.chascomus" target="_blank">Android (Google Play)</a><br>🍎 <a href="https://apps.apple.com/ar/app/sem-mobile/id1387705895" target="_blank">iPhone (App Store)</a><br><br>💻 <a href="https://chascomus.gob.ar/estacionamientomedido/" target="_blank">Gestión vía Web</a></div>`, 
         'obras_basura': `♻️ <b>Recolección:</b><br>Lun a Sáb 20hs (Húmedos)<br>Jueves 14hs (Reciclables)`,
-        'politicas_gen': `<strong>💜 Género (Urgencias):</strong><br>🚨 Guardia: <a href="https://wa.me/5492241559397">2241-559397</a><br>📍 Moreno Nº 259`,
-        'asistencia_social': `<strong>🤝 Acción Social:</strong><br>📍 Moreno Nº 259.`,
+       'politicas_gen': `
+        <div class="info-card" style="border-left: 5px solid #9b59b6;">
+            <strong style="color: #8e44ad; font-size: 1rem;">💜 Género y Diversidad</strong><br><br>
+            
+            <div style="font-size: 0.85rem; margin-bottom: 12px;">
+                🚨 <b>Guardia 24/7:</b> Orientación y acompañamiento en casos de violencia.<br>
+                🧠 <b>Equipo Técnico:</b> Abogadas, psicólogas y trabajadoras sociales.<br>
+                🏠 <b>Hogar de Tránsito:</b> Alojamiento temporal para mujeres en riesgo.<br>
+                🗣️ <b>Varones:</b> Espacio de abordaje y deconstrucción de conductas violentas.<br>
+                👮‍♀️ <b>Articulación:</b> Trabajo conjunto con Comisaría de la Mujer.
+            </div>
+
+            <div style="background: #fdf2ff; padding: 10px; border-radius: 8px; font-size: 0.9rem;">
+                📍 <b>Oficina:</b> Moreno 259 (Lun-Vie 9-14hs)<br>
+                ☎️ <b>Fijo Oficina:</b> <a href="tel:02241530448">2241-530448</a><br>
+                🚓 <b>Comisaría Mujer:</b> <a href="tel:02241422653">42-2653</a>
+            </div>
+
+            <a href="https://wa.me/5492241559397" target="_blank" class="wa-btn" style="background-color: #8e44ad !important;">🚨 GUARDIA 24HS (WhatsApp)</a>
+        </div>`,
+        'asistencia_social': `
+        <div class="info-card" style="border-left: 5px solid #e67e22;">
+            <strong style="color: #d35400;">🍎 Programa Alimentario (CAM)</strong><br><br>
+
+            📦 <b>RETIRO DE MÓDULOS:</b><br>
+            📍 <b>Lugar:</b> Depósito de calle Juárez.<br>
+            ⏰ <b>Horario:</b> 8:00 a 14:00 hs.<br><br>
+
+            📋 <b>Requisitos:</b><br>
+            • Presentar DNI (Obligatorio).<br>
+            • Documentación de salud/social (ej: Celíacos) si corresponde.<br><br>
+
+            🏢 <b>Atención Social General:</b><br>
+            Para entrevistas o trámites: Moreno 259.<br><br>
+
+            📞 <b>CONSULTAS Y CRONOGRAMA:</b><br>
+            Te recomendamos confirmar tu fecha antes de ir:<br>
+            <a href="https://wa.me/5492241559397" class="wa-btn" style="background-color: #d35400 !important;">📲 WhatsApp Guardia</a>
+        </div>`,
         'mediacion_info': `<strong>⚖️ Mediación:</strong><br>📍 Moreno Nº 259.`,
         'uda_info': `<strong>📍 Puntos UDA:</strong> Descentralización en barrios.`,
         'esp_lunes': `<b>🩺 Lunes:</b> Pediatría, Ginecología, Clínica Médica.`,
