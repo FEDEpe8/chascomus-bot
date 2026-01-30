@@ -87,16 +87,31 @@
     let formData = { tipo: "", ubicacion: "", descripcion: "" };
 
     /* --- DATA DE MENÚS (MuniBot Logic) --- */
+    /* --- DATA DE MENÚS (MuniBot Logic) --- */
     const MENUS = {
         main: { 
             title: (name) => `¡Hola <b>${name}</b>! 👋 Soy el asistente virtual de Chascomús. ¿En qué puedo ayudarte?`, 
             options: [
                 { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
-                { id: 'desarrollo_menu', label: '🤝 Acción Social' },
+                { id: 'turismo', label: '🏖️ Turismo' },
+                { id: 'deportes', label: '⚽ Deportes' },
                 { id: 'salud', label: '🏥 Salud' },
                 { id: 'obras', label: '🚧 Reclamos 147' },
                 { id: 'seguridad', label: '🛡️ Seguridad' },
                 { id: 'hacienda', label: '💰 Tasas' }
+            ]
+        },
+        turismo: {
+            title: () => 'Turismo y Cultura:',
+            options: [
+                { id: 't_info', label: 'ℹ️ Oficinas y Contacto', type: 'leaf', apiKey: 'turismo_info' },
+                { id: 't_link', label: '🔗 Web de Turismo', link: 'https://linktr.ee/turismoch' }
+            ]
+        },
+        deportes: {
+            title: () => 'Deportes:',
+            options: [
+                { id: 'd_info', label: '📍 Dirección de Deportes', type: 'leaf', apiKey: 'deportes_info' }
             ]
         },
         desarrollo_menu: {
@@ -177,13 +192,19 @@
     };
 
     /* --- CONTENIDO HTML (MuniBot Logic) --- */
+   /* --- CONTENIDO HTML (MuniBot Logic) --- */
     const RES = {
+        // NUEVOS DATOS
+        'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
+        'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
+        'link_147': `<div class="info-card"><strong>📝 ATENCIÓN AL VECINO 147</strong><br>🌐 <a href="https://147.chascomus.gob.ar/index.php?a=add" target="_blank">Cargar Ticket Online</a><br>📞 <a href="tel:147">Llamar al 147</a></div>`,
+
+        // DATOS EXISTENTES
         'farmacias_lista': `<strong>📍 Farmacias en Chascomús:</strong><br><br>• <b>Alfonsín:</b> Libres del Sur 121<br>• <b>Aprile:</b> Av. Lastra 115<br>• <b>Batastini:</b> Cramer 70<br>• <b>Belgrano:</b> Belgrano 649<br>• <b>Bellingieri:</b> H. Yrigoyen 78<br>• <b>Cangialosi:</b> Garay 56<br>• <b>Chascomús:</b> Av. Lastra 350<br>• <b>Del Norte:</b> El Ombú 102<br>• <b>Farmasur:</b> Bahía Blanca 91<br>• <b>Malena:</b> Escribano y Machado<br>• <b>Moriset:</b> Av. Lastra 591<br>• <b>Oria:</b> Libres del Sur 413<br>• <b>Pasteur:</b> Libres del Sur 302<br>• <b>Pensa:</b> H. Yrigoyen 710<br>• <b>Pozzi:</b> Rioja 28<br>• <b>Puyssegur:</b> Libres del Sur 946<br><br><i>* Nota: Usá la opción "Turnos" para confirmar la guardia.</i>`,
         'caps_wa': `<strong>📞 WhatsApp de los CAPS:</strong><br><br>🟢 <b>30 de Mayo:</b> <a href="https://wa.me/5492241588248">2241-588248</a><br>🟢 <b>Barrio Jardín:</b> <a href="https://wa.me/5492241498087">2241-498087</a><br>🟢 <b>San Luis:</b> <a href="https://wa.me/5492241604874">2241-604874</a><br>🟢 <b>El Porteño:</b> <a href="https://wa.me/5492241409316">2241-409316</a><br>🟢 <b>Gallo Blanco:</b> <a href="https://wa.me/5492241469267">2241-469267</a><br>🟢 <b>Iporá:</b> <a href="https://wa.me/5492241588247">2241-588247</a><br>🟢 <b>La Noria:</b> <a href="https://wa.me/5492241604872">2241-604872</a><br>🟢 <b>San Cayetano:</b> <a href="https://wa.me/5492241511430">2241-511430</a>`,
         'caps_mapas': `<strong>📍 Ubicaciones CAPS:</strong><br><br>• CIC 30 de Mayo (Bvd. 5 y Calle 2)<br>• Barrio Jardín (Tucumán e/ Quintana)<br>• San Luis (Chubut 755)<br>• El Porteño (Lucio Mansilla)<br>• Gallo Blanco (Estados Unidos)<br>• Iporá (Sargento Cabral 387)<br>• La Noria (Grito de Dolores)<br>• San Cayetano (Gabino Ezeiza)`,
         'h_turnos': `<strong>📅 Turnos Hospital:</strong><br>WhatsApp: <a href="https://wa.me/5492241466977">2241-466977</a>`,
         'h_info': `📍 <b>Hospital Municipal:</b> Av. Alfonsín e Yrigoyen.<br>🚨 Guardia 24 hs.`,
-        'link_147': `<div class="info-card"><strong>📝 ATENCIÓN AL VECINO 147</strong><br>🌐 <a href="https://147.chascomus.gob.ar/">Gestión Online</a><br>📞 <a href="tel:147">Llamar al 147</a></div>`,
         'hac_boleta': `<div class="info-card"><strong>📧 BOLETA DIGITAL</strong><br>🟢 WA: <a href="https://wa.me/5492241559739">2241-559739</a><br>📧 <a href="mailto:ingresospublicos@chascomus.gob.ar">Email</a></div>`,
         'hac_tomasa': `<b>🤖 Hacienda Tomasa:</b><br>Portal de autogestión.<br>🔗 <a href="https://tomasa.chascomus.gob.ar/">INGRESAR</a>`, 
         'hac_agua': `<b>💧 Consumo de Agua:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
@@ -211,7 +232,6 @@
         'poda': `🌿 <a href="https://apps.chascomus.gob.ar/podaresponsable/solicitud.php">Solicitud Poda</a>`,
         'farmacias_turno': `💊 <a href="https://www.turnofarma.com/turnos/ar/ba/chascomus">Ver Farmacias de Turno</a>`
     };
-
     /* --- LÓGICA DE INTERFAZ --- */
     
     function toggleInput(show) { 
