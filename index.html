@@ -86,7 +86,7 @@
 
 <div id="infoModal" class="modal">
     <div class="modal-content">
-        <span class="close-modal" onclick="toggleInfo()">&times;</span>
+        <span class="close-modal" onclick="toggleInfo()">×</span>
         <h3 class="modal-h3">Sobre MuniBot</h3>
         <p class="modal-p">
             Este asistente virtual te ayuda a encontrar información sobre trámites, salud, deportes, reclamos y más de forma rápida y sencilla.
@@ -121,7 +121,7 @@
                 { id: 'salud', label: '🏥 Salud' },
                 { id: 'obras', label: '🚧 Reclamos 147' },
                 { id: 'seguridad', label: '🛡️ Seguridad' },
-                { id: 'hacienda', label: '💰 Tasas' }
+                { id: 'hacienda', label: '💰 Tasas y OMIC' }
             ]
         },
         turismo: {
@@ -151,11 +151,18 @@
         salud: { 
             title: () => 'Gestión de Salud Pública:', 
             options: [
-                { id: 'centros', label: '🏥 CAPS (Mapas)', type: 'leaf', apiKey: 'caps_mapas' },
+                { id: 'centros', label: '🏥 CAPS (Salitas)' }, /* CORREGIDO: Ahora lleva a submenú */
                 { id: 'hospital_menu', label: '🏥 Hospital' },
                 { id: 'f_lista', label: '💊 Farmacias y Turnos', type: 'leaf', apiKey: 'farmacias_lista' },
                 { id: 'zoonosis', label: '🐾 Zoonosis', type: 'leaf', apiKey: 'zoo_rabia' },
                 { id: 'vac_hu', label: '💉 Vacunatorio', type: 'leaf', apiKey: 'vacunacion_info' }
+            ]
+        },
+        centros: { /* NUEVO SUBMENÚ para arreglar el problema de WA */
+            title: () => 'Centros de Atención Primaria (CAPS):',
+            options: [
+                { id: 'c_map', label: '📍 Ver Ubicaciones (Mapas)', type: 'leaf', apiKey: 'caps_mapas' },
+                { id: 'c_wa', label: '📞 Números de WhatsApp', type: 'leaf', apiKey: 'caps_wa' }
             ]
         },
         hospital_menu: {
@@ -186,12 +193,14 @@
                 { id: 'seg_infracciones', label: '⚖️ Mis Infracciones', type: 'leaf', apiKey: 'seg_infracciones' },
                 { id: 'seg_medido', label: '🅿️ Estacionamiento Medido', type: 'leaf', apiKey: 'seg_medido' },
                 { id: 'ojos', label: '👁️ Ojos en Alerta', type: 'leaf', apiKey: 'ojos' },
+                { id: 'def_civil', label: '🌪️ Defensa Civil (103)', type: 'leaf', apiKey: 'defensa_civil' },
                 { id: 'poli', label: '📞 Comisaría', type: 'leaf', apiKey: 'poli' }
             ]
         },
         hacienda: { 
-            title: () => 'Hacienda y Tasas:', 
+            title: () => 'Hacienda, Tasas y OMIC:', 
             options: [
+                { id: 'omic', label: '📢 OMIC (Defensa Consumidor)', type: 'leaf', apiKey: 'omic_info' }, /* NUEVO */
                 { id: 'toma', label: '🤖 Hacienda Tomasa', type: 'leaf', apiKey: 'hac_tomasa' },
                 { id: 'deud', label: '🔍 Ver Deuda / Pagar', type: 'leaf', apiKey: 'hac_deuda' },
                 { id: 'hac_agua', label: '💧 Agua', type: 'leaf', apiKey: 'hac_agua' },
@@ -211,6 +220,32 @@
 
     /* --- RESPUESTAS (Base de Datos HTML) --- */
     const RES = {
+        /* --- NUEVO: OMIC --- */
+        'omic_info': `
+        <div class="info-card">
+            <strong>📢 OMIC (Defensa del Consumidor)</strong><br>
+            Oficina Municipal de Información al Consumidor.<br><br>
+            ⚖️ <b>Asesoramiento y Reclamos:</b><br>
+            Protección de derechos en compras y servicios.<br><br>
+            📍 <b>Dirección:</b> Dorrego 229 (Estación Ferroautomotora).<br>
+            ⏰ <b>Horario:</b> Lunes a Viernes de 8:00 a 13:00 hs.<br>
+            📞 <b>Teléfonos:</b> 43-1287 / 42-5558
+        </div>`,
+
+        /* --- ARREGLADO: LISTA WHATSAPP CAPS --- */
+        'caps_wa': `
+        <div class="info-card">
+            <strong>📞 WhatsApp de los CAPS:</strong><br><br>
+            🟢 <b>30 de Mayo:</b> <a href="https://wa.me/5492241588248">2241-588248</a><br>
+            🟢 <b>Barrio Jardín:</b> <a href="https://wa.me/5492241498087">2241-498087</a><br>
+            🟢 <b>San Luis:</b> <a href="https://wa.me/5492241604874">2241-604874</a><br>
+            🟢 <b>El Porteño:</b> <a href="https://wa.me/5492241409316">2241-409316</a><br>
+            🟢 <b>Gallo Blanco:</b> <a href="https://wa.me/5492241469267">2241-469267</a><br>
+            🟢 <b>Iporá:</b> <a href="https://wa.me/5492241588247">2241-588247</a><br>
+            🟢 <b>La Noria:</b> <a href="https://wa.me/5492241604872">2241-604872</a><br>
+            🟢 <b>San Cayetano:</b> <a href="https://wa.me/5492241511430">2241-511430</a>
+        </div>`,
+
         /* --- 147 ATENCIÓN --- */
         'link_147': `
         <div class="info-card">
@@ -225,7 +260,7 @@
             Nombre, DNI, Teléfono y Dirección del problema.
         </div>`,
 
-        /* --- SALUD ACTUALIZADO --- */
+        /* --- SALUD MAPAS --- */
         'caps_mapas': `
         <div class="info-card">
             <strong>📍 Ubicaciones CAPS (Toque para ver mapa):</strong><br><br>
@@ -236,8 +271,7 @@
             • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+Gallo+Blanco+Chascomus" target="_blank">Gallo Blanco</a> (Estados Unidos)<br>
             • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+Ipora+Chascomus" target="_blank">Iporá</a> (Sargento Cabral 387)<br>
             • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+La+Noria+Chascomus" target="_blank">La Noria</a> (Grito de Dolores)<br>
-            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+San+Cayetano+Chascomus" target="_blank">San Cayetano</a> (Gabino Ezeiza)<br><br>
-            📲 <b>WhatsApp:</b> Seleccioná la opción "WhatsApp CAPS" para pedir turnos.
+            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+San+Cayetano+Chascomus" target="_blank">San Cayetano</a> (Gabino Ezeiza)
         </div>`,
 
         'farmacias_lista': `
@@ -286,11 +320,17 @@
             📱 <i>Consultá las redes de "Secretaría de Salud Chascomús" para horarios actualizados.</i>
         </div>`,
 
-        /* --- RESTO DE DATOS (YA CARGADOS) --- */
+        /* --- RESTO DE DATOS --- */
         'tierra_vivienda': `<div class="info-card"><strong>🔑 Tierra y Vivienda</strong><br><br>📋 <b>Registro de Demanda Habitacional:</b> Inscripción para mayores de 18 años sin vivienda/terreno (con DNI).<br>🏠 <b>Bien de Familia:</b> Protección jurídica de la vivienda (trámite con firma digital).<br>🗺️ <b>Gestión de Tierras:</b> Planos de mensura, numeración y catastro.<br><br>🔗 <a href="https://apps.chascomus.gob.ar/vivienda/" target="_blank">IR AL SITIO WEB</a></div>`,
         'mediacion_info': `<div class="info-card"><strong>⚖️ Mediación Comunitaria</strong><br>Resolución pacífica y gratuita de conflictos vecinales (ruidos, mascotas, edilicios).<br>📍 <b>Acercate a:</b> Moreno 259.</div>`,
         'uda_info': `<div class="info-card"><strong>📍 Puntos UDA (Atención en Barrios)</strong><br><i>Acercate a tu punto más cercano:</i><br><br>🔹 <b>UDA 1 (San Luis):</b> Chubut 755 (Mar/Vie 9-12).<br>🔹 <b>UDA 2 (San José Obrero):</b> F. Chapa 625 (Mar/Vie 9-12).<br>🔹 <b>UDA 3 (El Porteño):</b> Mansilla y Calle 3 (Vie 9-12).<br>🔹 <b>UDA 4 (30 de Mayo):</b> Bvd. 5 y Calle 2 (Vie 9-12).<br>🔹 <b>UDA 5 (B. Jardín):</b> J. Quintana e/ Misiones (Mar/Mié 9-12).<br>🔹 <b>UDA 6 (Gallo Blanco):</b> EE.UU. y Las Flores (Lun 9-12).<br>🔹 <b>UDA 7 (San Cayetano):</b> Comedor (Mar 9-12).<br>🔹 <b>UDA 8 (Políticas Com.):</b> Sarmiento 42 (Lun-Vie 8-12).<br>🔹 <b>UDA 9 (Iporá):</b> Perú y S. Cabral (Jue 9-12).<br><br>🚨 <b>Guardia 24hs:</b> <a href="https://wa.me/5492241559397">2241-559397</a></div>`,
         'pamuv': `<div class="info-card" style="border-left: 5px solid #c0392b;"><strong style="color: #c0392b;">🆘 PAMUV (Asistencia a la Víctima)</strong><br><br>Atención, contención y asesoramiento a personas víctimas de delitos o situaciones de violencia.<br><br>🛡️ <b>Plan Integral de Seguridad 2025-2027</b><br><br>🚨 <b>ATENCIÓN 24 HORAS:</b><br>Línea permanente para emergencias o consultas.<br><a href="https://wa.me/5492241514881" class="wa-btn" style="background-color: #c0392b !important;">📞 2241-514881 (WhatsApp)</a></div>`,
+        'defensa_civil': `<div class="info-card" style="border-left: 5px solid #c0392b;">
+        <strong style="color: #c0392b;">🌪️ Defensa Civil</strong><br><br>
+        🚨 <b>LÍNEA DE EMERGENCIA:</b><br>
+        Atención ante temporales, caída de árboles y riesgo en vía pública.<br>
+        📞 <a href="tel:103" class="wa-btn" style="background-color: #c0392b !important; text-align:center; display:block;">LLAMAR AL 103</a><br>
+        📧 <a href="mailto:defensa.civil@chascomus.gob.ar">Enviar Correo Electrónico</a></div>`,
         'basapp': `<div class="info-card"><strong>🔔 Basapp - Alerta Vecinal</strong><br>Botón antipánico y reporte de seguridad en tu celular.<br><br>📲 <b>Descargar App:</b><br>🤖 <a href="https://play.google.com/store/apps/details?id=ar.com.basapp.android.client" target="_blank">Android (Google Play)</a><br>🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank">iPhone (App Store)</a></div>`,
         'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
         'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
