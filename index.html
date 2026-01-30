@@ -3,332 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Muni Chascomús</title>
+    <title>MuniBot - Chascomús</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0072bc">
+    <meta name="theme-color" content="#2a6f97">
     <style>
-        /* --- ESTILOS GENERALES --- */
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; background-color: #e5ddd5; display: flex; flex-direction: column; height: 100vh; }
-        
-        /* Cabecera */
-        header { background-color: #0072bc; color: white; padding: 15px; display: flex; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.2); z-index: 10; }
-        header img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; background: white; padding: 2px; }
-        header h1 { font-size: 18px; margin: 0; font-weight: 600; }
-        header span { font-size: 12px; opacity: 0.9; }
+        /* --- VARIABLES DE COLOR (TUS TEMAS) --- */
+        :root {
+            --primary: #0072bc;   /* Azul Muni Default */
+            --salud: #d93025;     /* Rojo Salud */
+            --obras: #f39c12;     /* Naranja Obras */
+            --hacienda: #27ae60;  /* Verde Hacienda */
+            --seguridad: #2c3e50; /* Azul Oscuro Policia */
+            --bg: #e5ddd5;        /* Fondo tipo WhatsApp */
+            --user-msg: #0072bc;  /* Color default burbuja usuario */
+        }
 
-        /* Área de Chat */
-        #chat-container { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-repeat: repeat; scroll-behavior: smooth; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); margin: 0; display: flex; justify-content: center; height: 100vh; overflow: hidden; }
         
-        /* Mensajes */
-        .message { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 15px; line-height: 1.5; position: relative; word-wrap: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .bot { align-self: flex-start; background: white; border-top-left-radius: 2px; }
-        .user { align-self: flex-end; background: #dcf8c6; border-top-right-radius: 2px; }
+        /* Contenedor Principal */
+        .chat-container { width: 100%; max-width: 500px; background: #efe7dd; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); position: relative; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); background-repeat: repeat; }
         
-        /* Links dentro de mensajes */
-        .bot a { color: #0072bc; font-weight: bold; text-decoration: none; }
-        .bot a:hover { text-decoration: underline; }
+        /* Cabecera Dinámica */
+        .chat-header { padding: 15px 20px; color: white; display: flex; justify-content: space-between; align-items: center; transition: background 0.4s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; }
+        .chat-header div { display: flex; flex-direction: column; }
+        .muni-title { font-size: 11px; opacity: 0.9; letter-spacing: 0.5px; text-transform: uppercase; }
+        .bot-name { font-weight: 700; font-size: 18px; }
 
-        /* Contenedor de Botones */
-        .options-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; width: 100%; max-width: 320px; align-self: flex-start; }
+        /* Lógica de colores según tema activo */
+        .theme-default .chat-header { background: var(--primary); }
+        .theme-default { --user-msg: var(--primary); }
+
+        .theme-salud .chat-header { background: var(--salud); }
+        .theme-salud { --user-msg: var(--salud); }
+
+        .theme-obras .chat-header { background: var(--obras); }
+        .theme-obras { --user-msg: var(--obras); }
+
+        .theme-hacienda .chat-header { background: var(--hacienda); }
+        .theme-hacienda { --user-msg: var(--hacienda); }
+
+        .theme-seguridad .chat-header { background: var(--seguridad); }
+        .theme-seguridad { --user-msg: var(--seguridad); }
+
+        /* Área de Mensajes */
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
         
-        /* Botones Base */
-        .option-btn { 
+        .message-row { display: flex; width: 100%; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .message-row.user { justify-content: flex-end; }
+        
+        .message { max-width: 85%; padding: 12px 16px; border-radius: 12px; font-size: 15px; line-height: 1.5; position: relative; word-wrap: break-word; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+        
+        .message.bot { background: white; color: #333; border-top-left-radius: 0; }
+        .message.user { background: var(--user-msg); color: white; border-top-right-radius: 0; transition: background 0.4s ease; }
+
+        /* Links dentro del chat */
+        .message a { color: #0072bc; font-weight: bold; text-decoration: none; }
+        .message-row.user a { color: white; text-decoration: underline; }
+
+        /* Botones de Opciones */
+        .options-container { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; width: 100%; }
+        
+        .option-button { 
             background: white; 
             color: #444; 
             border: 1px solid #ddd; 
-            border-left: 5px solid #0072bc; /* Default color */
+            border-left: 5px solid transparent; /* Para el color del tema */
             padding: 12px 15px; 
             border-radius: 8px; 
             font-weight: 600; 
             cursor: pointer; 
             transition: 0.2s; 
             text-align: left; 
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 2px rgba(0,0,0,0.05);
+            font-size: 14px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        .option-btn:hover { transform: translateX(3px); background: #f9f9f9; }
-        .option-btn:active { background: #eee; }
+        
+        /* Colorear el borde del botón según el tema actual */
+        .theme-default .option-button { border-left-color: var(--primary); }
+        .theme-salud .option-button { border-left-color: var(--salud); }
+        .theme-obras .option-button { border-left-color: var(--obras); }
+        .theme-hacienda .option-button { border-left-color: var(--hacienda); }
+        .theme-seguridad .option-button { border-left-color: var(--seguridad); }
 
-        /* --- TEMAS POR ÁREA (Colores del borde izquierdo) --- */
-        .theme-salud .option-btn { border-left-color: #2ecc71; } /* Verde */
-        .theme-seguridad .option-btn { border-left-color: #34495e; } /* Azul oscuro */
-        .theme-hacienda .option-btn { border-left-color: #f1c40f; } /* Dorado */
-        .theme-obras .option-btn { border-left-color: #e67e22; } /* Naranja */
-        .theme-default .option-btn { border-left-color: #0072bc; } /* Azul Muni */
+        .option-button:hover { filter: brightness(0.98); transform: translateX(2px); }
+        
+        .back-button { 
+            background: #ffebee !important; 
+            color: #c62828 !important; 
+            border: 1px solid #ef9a9a !important; 
+            border-left: none !important;
+            text-align: center; 
+            justify-content: center;
+        }
 
-        /* Botón Volver */
-        .btn-back { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; border-left: none; text-align: center; justify-content: center; margin-top: 5px; }
-
-        /* Input Área */
-        #input-area { background: #f0f0f0; padding: 10px; display: flex; align-items: center; gap: 10px; border-top: 1px solid #ddd; }
-        #user-input { flex: 1; padding: 12px; border-radius: 20px; border: none; outline: none; font-size: 16px; }
-        #send-btn { background: #0072bc; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
-        #send-btn:disabled { background: #ccc; cursor: default; }
+        /* Input Inferior */
+        .chat-input { padding: 10px; background: #f0f0f0; border-top: 1px solid #ddd; display: flex; gap: 10px; align-items: center; }
+        #userInput { flex: 1; padding: 12px; border: none; border-radius: 25px; outline: none; font-size: 16px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); }
+        #sendButton { background: var(--primary); color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; transition: 0.3s; }
+        #sendButton:hover { filter: brightness(1.1); }
+        
+        /* Botón de Reset en Header */
+        .reset-btn { background:none; border:none; color:white; cursor:pointer; font-size:22px; padding: 5px; opacity: 0.8; transition: 0.3s; }
+        .reset-btn:hover { opacity: 1; transform: scale(1.1); }
 
     </style>
 </head>
 <body>
 
-    <header>
-        <img src="logo.png" alt="Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3592/3592882.png'">
+<div class="chat-container theme-default" id="mainContainer">
+    <div class="chat-header">
         <div>
-            <h1>Muni Chascomús</h1>
-            <span>Asistente Virtual</span>
+            <div class="muni-title">Municipalidad de Chascomús</div>
+            <div class="bot-name">MuniBot</div>
         </div>
-    </header>
-
-    <div id="chat-container"></div>
-
-    <div id="input-area">
-        <input type="text" id="user-input" placeholder="Escribe tu nombre..." autocomplete="off">
-        <button id="send-btn">➤</button>
+        <button onclick="location.reload()" class="reset-btn" title="Reiniciar Chat">🗑️</button>
     </div>
+    
+    <div id="chatMessages" class="chat-messages"></div>
+    
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Escribe aquí..." autocomplete="off">
+        <button id="sendButton">➤</button>
+    </div>
+</div>
 
-    <script>
-        /* --- TUS DATOS NUEVOS --- */
-        const menus = {
-            main: { 
-                id: 'main', theme: 'theme-default', title: (name) => `¡Hola ${name}! 👋 Soy el asistente virtual. ¿En qué área puedo ayudarte hoy?`, 
-                options: [
-                    { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
-                    { id: 'desarrollo_menu', label: '🤝 Acción Social' },
-                    { id: 'salud', label: '🏥 Salud' },
-                    { id: 'obras', label: '🚧 Reclamos 147 / Poda' },
-                    { id: 'seguridad', label: '🛡️ Seguridad y Tránsito' },
-                    { id: 'hacienda', label: '💰 Hacienda / Tasas' }
-                ]
-            },
-            desarrollo_menu: {
-                id: 'desarrollo_menu', parent: 'main', theme: 'theme-default', title: () => 'Acción Social y Comunitaria:', 
-                options: [
-                    { id: 'asistencia', label: '🍎 Ayuda Alimentaria', type: 'leaf', apiKey: 'asistencia_social' },
-                    { id: 'mediacion', label: '⚖️ Mediación Vecinal', type: 'leaf', apiKey: 'mediacion_info' },
-                    { id: 'uda', label: '📍 Puntos UDA (Barrios)', type: 'leaf', apiKey: 'uda_info' },
-                    { id: 'tierra_vivienda', label: '🔑 Tierra y Vivienda', type: 'leaf', apiKey: 'tierra_vivienda' },
-                    { id: 'ninez', label: '👶 Niñez y Adolescencia', type: 'leaf', apiKey: 'ninez' }
-                ]
-            },
-            salud: { 
-                id: 'salud', parent: 'main', theme: 'theme-salud', title: () => 'Gestión de Salud Pública:', 
-                options: [
-                    { id: 'centros', label: '🏥 CAPS (Salitas)' },
-                    { id: 'hospital_menu', label: '🏥 Hospital y Especialistas' },
-                    { id: 'f_turno', label: '💊 Farmacias de Turno', type: 'leaf', apiKey: 'farmacias_turno' },
-                    { id: 'f_lista', label: '💊 Direcciones Farmacias', type: 'leaf', apiKey: 'farmacias_lista' },
-                    { id: 'zoonosis', label: '🐾 Zoonosis', type: 'leaf', apiKey: 'zoo_rabia' },
-                    { id: 'vac_hu', label: '💉 Vacunatorio Humano', type: 'leaf', apiKey: 'vacunacion_info' }
-                ]
-            },
-            hospital_menu: {
-                id: 'hospital_menu', parent: 'salud', theme: 'theme-salud', title: () => 'Hospital Municipal:',
-                options: [
-                    { id: 'h_tur', label: '📅 WhatsApp Turnos', type: 'leaf', apiKey: 'h_turnos' },
-                    { id: 'h_espec_menu', label: '🩺 Especialidades por Día' },
-                    { id: 'h_guardia', label: '🚨 Guardia e Info', type: 'leaf', apiKey: 'h_info' }
-                ]
-            },
-            h_espec_menu: {
-                id: 'h_espec_menu', parent: 'hospital_menu', theme: 'theme-salud', title: () => 'Seleccioná un día para ver especialistas:',
-                options: [
-                    { id: 'lunes', label: 'Lunes', type: 'leaf', apiKey: 'esp_lunes' },
-                    { id: 'martes', label: 'Martes', type: 'leaf', apiKey: 'esp_martes' },
-                    { id: 'miercoles', label: 'Miércoles', type: 'leaf', apiKey: 'esp_miercoles' },
-                    { id: 'jueves', label: 'Jueves', type: 'leaf', apiKey: 'esp_jueves' },
-                    { id: 'viernes', label: 'Viernes', type: 'leaf', apiKey: 'esp_viernes' }
-                ]
-            },
-            centros: {
-                id: 'centros', parent: 'salud', theme: 'theme-salud', title: () => 'Atención Primaria (CAPS):',
-                options: [
-                    { id: 'c_wa', label: '📞 WhatsApp de CAPS', type: 'leaf', apiKey: 'caps_wa' },
-                    { id: 'c_map', label: '📍 Direcciones y Mapas', type: 'leaf', apiKey: 'caps_mapas' }
-                ]
-            },
-           seguridad: { 
-                id: 'seguridad', parent: 'main', theme: 'theme-seguridad', title: () => 'Seguridad y Trámites:', 
-                options: [
-                    { id: 'lic_tramite', label: '🪪 Turno Licencia (Carnet)', type: 'leaf', apiKey: 'lic_web' },
-                    { id: 'lic_con', label: '🚗 Academia de Conducir', type: 'leaf', apiKey: 'lic' }, 
-                    { id: 'ojos', label: '👁️ Ojos en Alerta (WA)', type: 'leaf', apiKey: 'ojos' },
-                    { id: 'poli', label: '📞 Comisaría y COM', type: 'leaf', apiKey: 'poli' }
-                ]
-            },
-            hacienda: { 
-                id: 'hacienda', parent: 'main', theme: 'theme-hacienda', title: () => 'Hacienda y Tasas:', 
-                options: [
-                    { id: 'toma', label: '🤖 Hacienda Tomasa', type: 'leaf', apiKey: 'tomasa' },
-                    { id: 'deud', label: '🔍 Ver Deuda / Pagar', type: 'leaf', apiKey: 'deuda' },
-                    { id: 'boleta', label: '📧 Boleta Digital', type: 'leaf', apiKey: 'hac_boleta' },
-                    { id: 'hab', label: '🏬 Habilitación Comercial', type: 'leaf', apiKey: 'hac_hab' }
-                ]
-            },
-            obras: { 
-                id: 'obras', parent: 'main', theme: 'theme-obras', title: () => 'Atención al Vecino 147:', 
-                options: [
-                    { id: 'n_147', label: '📝 Iniciar Nuevo Reclamo', type: 'leaf', apiKey: 'link_147' },
-                    { id: 'poda', label: '🌿 Poda Responsable', type: 'leaf', apiKey: 'poda' }
-                ]
-            }
-        };
+<script>
+let userName = "";
+let currentPath = ['main']; // Pila de navegación (Stack)
 
-        const res = {
-            'politicas_gen': `<strong>💜 Políticas de Género y Diversidad:</strong><br><br>🚨 <b>Guardia 24 hs:</b> <a href="https://wa.me/5492241559397" target="_blank">2241-559397</a><br>📍 <b>Atención:</b> Moreno Nº 259<br>🏢 <b>Comisaría de la Mujer:</b> 42-2653.`,
-            'asistencia_social': `<strong>🤝 Acción Social:</strong><br><br>📍 Moreno Nº 259.<br>Programas de ayuda alimentaria y adultos mayores.`,
-            'mediacion_info': `<strong>⚖️ Mediación Vecinal:</strong> Resolución de conflictos.<br>📍 Moreno Nº 259.`,
-            'uda_info': `<strong>📍 Puntos UDA:</strong> Descentralización en barrios (SUM Iporá, etc).`,
-            'caps_wa': `<strong>📞 WhatsApp de los CAPS:</strong><br><br>
-                🟢 <b>30 de Mayo:</b> <a href="https://wa.me/5492241588248" target="_blank">2241-588248</a><br>
-                🟢 <b>Iporá:</b> <a href="https://wa.me/5492241588247" target="_blank">2241-588247</a><br>
-                🟢 <b>La Noria:</b> <a href="https://wa.me/5492241604872" target="_blank">2241-604872</a><br>
-                🟢 <b>San Luis:</b> <a href="https://wa.me/5492241604874" target="_blank">2241-604874</a><br>
-                🟢 <b>Roque Carranza:</b> <a href="https://wa.me/5492241604873" target="_blank">2241-604873</a><br>
-                🟢 <b>El Porteño:</b> <a href="https://wa.me/5492241588249" target="_blank">2241-588249</a>`,
-            'caps_mapas': `<strong>📍 Ubicación de los CAPS:</strong><br><br>
-                • <a href="https://goo.gl/maps/PLACEHOLDER" target="_blank"><b>Iporá:</b></a> Sargento Cabral Nº 387.<br>
-                • <a href="https://goo.gl/maps/PLACEHOLDER" target="_blank"><b>El Porteño:</b></a> Lucio Mansilla entre Pincén y Lautaro.<br>
-                • <a href="https://goo.gl/maps/PLACEHOLDER" target="_blank"><b>La Noria:</b></a> Giraud entre Brasil y Chile.<br>
-                • <a href="https://goo.gl/maps/PLACEHOLDER" target="_blank"><b>30 de Mayo:</b></a> Bv. 30 de Mayo.<br>
-                🏥 <i>Atención de Lunes a Viernes de 7:00 a 16:00 hs.</i>`,
-            'h_turnos': `📅 WhatsApp Turnos Hospital: <a href="https://wa.me/5492241466977" target="_blank">2241-466977</a>`,
-            'h_info': `📍 Hospital Municipal: Av. Alfonsín e Yrigoyen. 🚨 Guardia 24 hs.`,
-            'esp_lunes': `<b>🩺 Lunes:</b> Pediatría, Ginecología, Clínica Médica.`,
-            'esp_martes': `<b>🩺 Martes:</b> Cardiología, Traumatología, Pediatría.`,
-            'esp_miercoles': `<b>🩺 Miércoles:</b> Obstetricia, Clínica Médica, Oftalmología.`,
-            'esp_jueves': `<b>🩺 Jueves:</b> Nutrición, Pediatría, Cirugía.`,
-            'esp_viernes': `<b>🩺 Viernes:</b> Neurología, Clínica Médica, Psiquiatría.`,
-            'hac_hab': `🚀 <b>Habilitación Comercial:</b><br><br>🔗 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php" target="_blank">Iniciar Trámite Aquí</a>`,
-            'ninez': `<b>👶 Niñez:</b> Mendoza Nº 95. 📞 43-1146.`,
-            'tierra_vivienda': `<b>🔑 Tierra y Vivienda:</b> Ex Centro Cívico (Dorrego y Bolívar).`,
-            'tomasa': `🤖 <a href="https://tomasa.chascomus.gob.ar/" target="_blank">Ir a Hacienda Tomasa</a>`,
-            'link_147': `<div style="background: #fdfaf5; border-left: 5px solid #f39c12; padding: 10px; border-radius: 4px;"><strong>📝 ATENCIÓN AL VECINO 147</strong><br><br>Iniciá tu reclamo las 24 hs aquí:<br>🔗 <a href="https://147.chascomus.gob.ar/" target="_blank">147.chascomus.gob.ar</a></div>`,
-            'farmacias_turno': `💊 <a href="https://www.turnofarma.com/turnos/ar/ba/chascomus" target="_blank">Ver Farmacias de Turno Hoy</a>`,
-            'farmacias_lista': `<strong>📍 Farmacias:</strong> Oria, Malena, Alfonsín, Chascomús, Puyssegur, Belgrano, Pensa, Aprile, Moriset, Del Norte, Cangialosi, Del Centro, Bellingeri, Pozzi, Farmasur.`,
-            'ojos': `👁️ <b>Ojos en Alerta:</b> <a href="https://wa.me/5492241557444" target="_blank">2241-557444</a>`,
-            'lic_web': `<strong>🪪 Turnos Licencia:</strong> <a href="https://apps.chascomus.gob.ar/conducir/turno.php" target="_blank">Sacar Turno</a>`,
-            'lic': `<strong>🚗 Academia:</strong> <a href="https://apps.chascomus.gob.ar/academia/" target="_blank">Turnos Academia</a>`,
-            'deuda': `🔍 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas" target="_blank">Consultar Deuda</a>`,
-            'poda': `🌿 <a href="https://apps.chascomus.gob.ar/podaresponsable/solicitud.php" target="_blank">Poda Responsable</a>`,
-            'hac_boleta': `<strong>📧 Boleta Digital:</strong> WhatsApp <a href="https://wa.me/5492241559739" target="_blank">2241-559739</a>`,
-            'poli': `📞 <b>Policía:</b> 42-2222 | 🎥 <b>COM:</b> 43-1333`,
-            'zoo_rabia': `<strong>🐾 Zoonosis:</strong> Mendoza 95. Castración y Vacunación Antirrábica.`,
-            'vacunacion_info': `<div style="background: #f8f9fa; border-left: 5px solid #d93025; padding: 10px; border-radius:4px;"><strong>💉 VACUNACIÓN</strong><br>Hospital Municipal (Av. Alfonsín) de 08:00 a 16:30 hs.</div>`
-        };
+/* --- DATOS Y LÓGICA DE MENÚS --- */
+const menus = {
+    main: { 
+        id: 'main', theme: 'theme-default', title: (name) => `¡Hola ${name}! 👋 Soy el asistente virtual. ¿En qué área puedo ayudarte hoy?`, 
+        options: [
+            { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
+            { id: 'desarrollo_menu', label: '🤝 Acción Social' },
+            { id: 'salud', label: '🏥 Salud' },
+            { id: 'obras', label: '🚧 Reclamos 147 / Poda' },
+            { id: 'seguridad', label: '🛡️ Seguridad y Tránsito' },
+            { id: 'hacienda', label: '💰 Hacienda / Tasas' }
+        ]
+    },
+    desarrollo_menu: {
+        id: 'desarrollo_menu', theme: 'theme-default', title: () => 'Acción Social y Comunitaria:', 
+        options: [
+            { id: 'asistencia', label: '🍎 Ayuda Alimentaria', type: 'leaf', apiKey: 'asistencia_social' },
+            { id: 'mediacion', label: '⚖️ Mediación Vecinal', type: 'leaf', apiKey: 'mediacion_info' },
+            { id: 'uda', label: '📍 Puntos UDA (Barrios)', type: 'leaf', apiKey: 'uda_info' },
+            { id: 'tierra_vivienda', label: '🔑 Tierra y Vivienda', type: 'leaf', apiKey: 'tierra_vivienda' },
+            { id: 'ninez', label: '👶 Niñez y Adolescencia', type: 'leaf', apiKey: 'ninez' }
+        ]
+    },
+    salud: { 
+        id: 'salud', theme: 'theme-salud', title: () => 'Gestión de Salud Pública:', 
+        options: [
+            { id: 'centros', label: '🏥 CAPS (Salitas)' },
+            { id: 'hospital_menu', label: '🏥 Hospital y Especialistas' },
+            { id: 'f_turno', label: '💊 Farmacias de Turno', type: 'leaf', apiKey: 'farmacias_turno' },
+            { id: 'f_lista', label: '💊 Direcciones Farmacias', type: 'leaf', apiKey: 'farmacias_lista' },
+            { id: 'zoonosis', label: '🐾 Zoonosis', type: 'leaf', apiKey: 'zoo_rabia' },
+            { id: 'vac_hu', label: '💉 Vacunatorio Humano', type: 'leaf', apiKey: 'vacunacion_info' }
+        ]
+    },
+    hospital_menu: {
+        id: 'hospital_menu', theme: 'theme-salud', title: () => 'Hospital Municipal:',
+        options: [
+            { id: 'h_tur', label: '📅 WhatsApp Turnos', type: 'leaf', apiKey: 'h_turnos' },
+            { id: 'h_espec_menu', label: '🩺 Especialidades por Día' },
+            { id: 'h_guardia', label: '🚨 Guardia e Info', type: 'leaf', apiKey: 'h_info' }
+        ]
+    },
+    h_espec_menu: {
+        id: 'h_espec_menu', theme: 'theme-salud', title: () => 'Seleccioná un día para ver especialistas:',
+        options: [
+            { id: 'lunes', label: 'Lunes', type: 'leaf', apiKey: 'esp_lunes' },
+            { id: 'martes', label: 'Martes', type: 'leaf', apiKey: 'esp_martes' },
+            { id: 'miercoles', label: 'Miércoles', type: 'leaf', apiKey: 'esp_miercoles' },
+            { id: 'jueves', label: 'Jueves', type: 'leaf', apiKey: 'esp_jueves' },
+            { id: 'viernes', label: 'Viernes', type: 'leaf', apiKey: 'esp_viernes' }
+        ]
+    },
+    centros: {
+        id: 'centros', theme: 'theme-salud', title: () => 'Atención Primaria (CAPS):',
+        options: [
+            { id: 'c_wa', label: '📞 WhatsApp de CAPS', type: 'leaf', apiKey: 'caps_wa' },
+            { id: 'c_map', label: '📍 Direcciones y Mapas', type: 'leaf', apiKey: 'caps_mapas' }
+        ]
+    },
+   seguridad: { 
+        id: 'seguridad', theme: 'theme-seguridad', title: () => 'Seguridad y Trámites:', 
+        options: [
+            { id: 'lic_tramite', label: '🪪 Turno Licencia (Carnet)', type: 'leaf', apiKey: 'lic_web' },
+            { id: 'lic_con', label: '🚗 Academia de Conducir', type: 'leaf', apiKey: 'lic' }, 
+            { id: 'ojos', label: '👁️ Ojos en Alerta (WA)', type: 'leaf', apiKey: 'ojos' },
+            { id: 'poli', label: '📞 Comisaría y COM', type: 'leaf', apiKey: 'poli' }
+        ]
+    },
+    hacienda: { 
+        id: 'hacienda', theme: 'theme-hacienda', title: () => 'Hacienda y Tasas:', 
+        options: [
+            { id: 'toma', label: '🤖 Hacienda Tomasa', type: 'leaf', apiKey: 'tomasa' },
+            { id: 'deud', label: '🔍 Ver Deuda / Pagar', type: 'leaf', apiKey: 'deuda' },
+            { id: 'boleta', label: '📧 Boleta Digital', type: 'leaf', apiKey: 'hac_boleta' },
+            { id: 'hab', label: '🏬 Habilitación Comercial', type: 'leaf', apiKey: 'hac_hab' }
+        ]
+    },
+    obras: { 
+        id: 'obras', theme: 'theme-obras', title: () => 'Atención al Vecino 147:', 
+        options: [
+            { id: 'n_147', label: '📝 Iniciar Nuevo Reclamo', type: 'leaf', apiKey: 'link_147' },
+            { id: 'poda', label: '🌿 Poda Responsable', type: 'leaf', apiKey: 'poda' }
+        ]
+    }
+};
 
-        /* --- LÓGICA DEL CHAT --- */
-        const chatBox = document.getElementById('chat-container');
-        const input = document.getElementById('user-input');
-        const btn = document.getElementById('send-btn');
-        let userName = "";
+/* --- BASE DE DATOS DE RESPUESTAS (HTML) --- */
+const res = {
+    'politicas_gen': `<strong>💜 Políticas de Género y Diversidad:</strong><br><br>🚨 <b>Guardia 24 hs:</b> <a href="https://wa.me/5492241559397" target="_blank">2241-559397</a><br>📍 <b>Atención:</b> Moreno Nº 259<br>🏢 <b>Comisaría de la Mujer:</b> 42-2653.`,
+    'asistencia_social': `<strong>🤝 Acción Social:</strong><br><br>📍 Moreno Nº 259.<br>Programas de ayuda alimentaria y adultos mayores.`,
+    'mediacion_info': `<strong>⚖️ Mediación Vecinal:</strong> Resolución de conflictos.<br>📍 Moreno Nº 259.`,
+    'uda_info': `<strong>📍 Puntos UDA:</strong> Descentralización en barrios (SUM Iporá, etc).`,
+    'caps_wa': `<strong>📞 WhatsApp de los CAPS:</strong><br><br>
+        🟢 <b>30 de Mayo:</b> <a href="https://wa.me/5492241588248" target="_blank">2241-588248</a><br>
+        🟢 <b>Iporá:</b> <a href="https://wa.me/5492241588247" target="_blank">2241-588247</a><br>
+        🟢 <b>La Noria:</b> <a href="https://wa.me/5492241604872" target="_blank">2241-604872</a><br>
+        🟢 <b>San Luis:</b> <a href="https://wa.me/5492241604874" target="_blank">2241-604874</a><br>
+        🟢 <b>Roque Carranza:</b> <a href="https://wa.me/5492241604873" target="_blank">2241-604873</a><br>
+        🟢 <b>El Porteño:</b> <a href="https://wa.me/5492241588249" target="_blank">2241-588249</a>`,
+    'caps_mapas': `<strong>📍 Ubicación de los CAPS:</strong><br><br>
+        • <a href="https://maps.google.com" target="_blank"><b>Iporá:</b></a> Sargento Cabral Nº 387.<br>
+        • <a href="https://maps.google.com" target="_blank"><b>El Porteño:</b></a> Lucio Mansilla entre Pincén y Lautaro.<br>
+        • <a href="https://maps.google.com" target="_blank"><b>La Noria:</b></a> Giraud entre Brasil y Chile.<br>
+        • <a href="https://maps.google.com" target="_blank"><b>30 de Mayo:</b></a> Bv. 30 de Mayo.<br>
+        🏥 <i>Atención de Lunes a Viernes de 7:00 a 16:00 hs.</i>`,
+    'h_turnos': `📅 WhatsApp Turnos Hospital: <a href="https://wa.me/5492241466977" target="_blank">2241-466977</a>`,
+    'h_info': `📍 Hospital Municipal: Av. Alfonsín e Yrigoyen. 🚨 Guardia 24 hs.`,
+    'esp_lunes': `<b>🩺 Lunes:</b> Pediatría, Ginecología, Clínica Médica.`,
+    'esp_martes': `<b>🩺 Martes:</b> Cardiología, Traumatología, Pediatría.`,
+    'esp_miercoles': `<b>🩺 Miércoles:</b> Obstetricia, Clínica Médica, Oftalmología.`,
+    'esp_jueves': `<b>🩺 Jueves:</b> Nutrición, Pediatría, Cirugía.`,
+    'esp_viernes': `<b>🩺 Viernes:</b> Neurología, Clínica Médica, Psiquiatría.`,
+    'hac_hab': `🚀 <b>Habilitación Comercial:</b><br><br>🔗 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php" target="_blank">Iniciar Trámite Aquí</a>`,
+    'ninez': `<b>👶 Niñez:</b> Mendoza Nº 95. 📞 43-1146.`,
+    'tierra_vivienda': `<b>🔑 Tierra y Vivienda:</b> Ex Centro Cívico (Dorrego y Bolívar).`,
+    'tomasa': `🤖 <a href="https://tomasa.chascomus.gob.ar/" target="_blank">Ir a Hacienda Tomasa</a>`,
+    'link_147': `<div style="background: #fdfaf5; border-left: 5px solid #f39c12; padding: 15px; border-radius: 8px;"><strong>📝 ATENCIÓN AL VECINO 147</strong><br><br>Iniciá tu reclamo las 24 hs aquí:<br>🔗 <a href="https://147.chascomus.gob.ar/" target="_blank">147.chascomus.gob.ar</a></div>`,
+    'farmacias_turno': `💊 <a href="https://www.turnofarma.com/turnos/ar/ba/chascomus" target="_blank">Ver Farmacias de Turno Hoy</a>`,
+    'farmacias_lista': `<strong>📍 Farmacias:</strong> Oria, Malena, Alfonsín, Chascomús, Puyssegur, Belgrano, Pensa, Aprile, Moriset, Del Norte, Cangialosi, Del Centro, Bellingeri, Pozzi, Farmasur.`,
+    'ojos': `👁️ <b>Ojos en Alerta:</b> <a href="https://wa.me/5492241557444" target="_blank">2241-557444</a>`,
+    'lic_web': `<strong>🪪 Turnos Licencia:</strong> <a href="https://apps.chascomus.gob.ar/conducir/turno.php" target="_blank">Sacar Turno</a>`,
+    'lic': `<strong>🚗 Academia:</strong> <a href="https://apps.chascomus.gob.ar/academia/" target="_blank">Turnos Academia</a>`,
+    'deuda': `🔍 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas" target="_blank">Consultar Deuda</a>`,
+    'poda': `🌿 <a href="https://apps.chascomus.gob.ar/podaresponsable/solicitud.php" target="_blank">Poda Responsable</a>`,
+    'hac_boleta': `<strong>📧 Boleta Digital:</strong> WhatsApp <a href="https://wa.me/5492241559739" target="_blank">2241-559739</a>`,
+    'poli': `📞 <b>Policía:</b> 42-2222 | 🎥 <b>COM:</b> 43-1333`,
+    'zoo_rabia': `<strong>🐾 Zoonosis:</strong> Mendoza 95. Castración y Vacunación Antirrábica.`,
+    'vacunacion_info': `<div style="background: #f8f9fa; border-left: 5px solid #d93025; padding: 15px; border-radius:4px;"><strong>💉 VACUNACIÓN</strong><br>Hospital Municipal (Av. Alfonsín) de 08:00 a 16:30 hs.</div>`
+};
 
-        // Al iniciar
-        window.onload = () => {
-            botMsg("¡Hola! Bienvenido. 👋");
-            setTimeout(() => botMsg("Para comenzar, por favor escribe tu nombre."), 500);
-            
-            // PWA
-            if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
-        };
+/* --- CONTROLADOR DEL CHAT --- */
+function initChat() {
+    addBotMessage("¡Hola! 😊 Bienvenido al asistente virtual de Chascomús. ¿Cuál es tu nombre?");
+}
 
-        // Eventos
-        btn.onclick = processName;
-        input.addEventListener('keypress', (e) => { if(e.key === 'Enter') processName() });
+document.getElementById('sendButton').onclick = processInput;
+document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter') processInput(); };
 
-        function processName() {
-            const txt = input.value.trim();
-            if(!txt) return;
+function processInput() {
+    const input = document.getElementById('userInput');
+    const val = input.value.trim();
+    if(!val) return;
+    
+    addUserMessage(val);
+    input.value = "";
+    
+    if(!userName) {
+        userName = val;
+        // Desactivamos input para forzar el uso de botones
+        input.placeholder = "Selecciona una opción del menú...";
+        // input.disabled = true; // Descomentar si quieres bloquear el teclado
+        setTimeout(renderMenu, 600);
+    } else {
+        setTimeout(() => addBotMessage("Por favor, usa los botones del menú para navegar 👇"), 600);
+    }
+}
 
-            // Si aún no tenemos nombre
-            if (!userName) {
-                userMsg(txt);
-                userName = txt;
-                input.value = "";
-                input.placeholder = "Selecciona una opción...";
-                input.disabled = true; // Desactivar teclado
-                btn.disabled = true;
+function handleOption(id, label, type, apiKey) {
+    if (id === 'back') {
+        currentPath.pop(); // Sacamos el último menú de la pila
+        renderMenu();
+        return;
+    }
 
-                // Cargar menú principal después de 1 segundo
-                setTimeout(() => renderMenu('main'), 800);
-            }
-        }
+    addUserMessage(label);
+    
+    // Si es un botón final (hoja)
+    if (type === 'leaf' || apiKey) {
+        setTimeout(() => { 
+            const respuesta = res[apiKey] || "⚠️ Información no disponible por el momento.";
+            addBotMessage(respuesta);
+            // No hacemos pop() para que el usuario pueda elegir otra opción del mismo menú si quiere
+        }, 500);
+        return;
+    }
 
-        function renderMenu(menuId) {
-            const menuData = menus[menuId];
-            if (!menuData) return console.error("Menú no encontrado:", menuId);
+    // Si es un submenú, lo agregamos a la pila
+    if (menus[id]) {
+        currentPath.push(id);
+        renderMenu();
+    }
+}
 
-            // 1. Mostrar título del menú (ejecutando la función title)
-            const titleText = menuData.title(userName);
-            botMsg(titleText);
+function renderMenu() {
+    const mid = currentPath[currentPath.length - 1]; // Obtener el menú actual de la pila
+    const m = menus[mid];
+    
+    // Aplicar Tema de Color al contenedor principal
+    const themeClass = m.theme || 'theme-default';
+    const container = document.getElementById('mainContainer');
+    
+    // Removemos clases viejas y ponemos la nueva
+    container.className = `chat-container ${themeClass}`;
+    
+    let opts = [...m.options];
+    
+    // Si no estamos en el inicio, agregamos botón volver
+    if (currentPath.length > 1) {
+        opts.push({ id: 'back', label: '⬅️ Volver al menú anterior', isBack: true });
+    }
+    
+    const titleText = typeof m.title === 'function' ? m.title(userName) : m.title;
+    
+    setTimeout(() => addBotMessage(titleText, opts), 400);
+}
 
-            // 2. Crear contenedor de opciones con el Tema (theme)
-            const div = document.createElement('div');
-            div.className = `options-grid ${menuData.theme || 'theme-default'}`;
+function addBotMessage(text, options = null) {
+    const chatMessages = document.getElementById('chatMessages');
+    const row = document.createElement('div');
+    row.className = 'message-row bot';
+    
+    const bubble = document.createElement('div');
+    bubble.className = 'message bot';
+    bubble.innerHTML = text; // Permite HTML
+    row.appendChild(bubble);
 
-            // 3. Generar botones
-            menuData.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "option-btn";
-                btn.innerText = opt.label;
-                btn.onclick = () => handleOptionClick(opt, menuId);
-                div.appendChild(btn);
-            });
+    chatMessages.appendChild(row);
 
-            // 4. Agregar botón "Volver" si tiene padre
-            if (menuData.parent) {
-                const backBtn = document.createElement('button');
-                backBtn.className = "option-btn btn-back";
-                backBtn.innerText = "⬅ Volver";
-                backBtn.onclick = () => {
-                    userMsg("Volver");
-                    setTimeout(() => renderMenu(menuData.parent), 500);
-                };
-                div.appendChild(backBtn);
-            }
+    // Si hay botones, los ponemos debajo de la burbuja en su propio contenedor
+    if (options) {
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'options-container';
+        
+        options.forEach(o => {
+            const btn = document.createElement('button');
+            btn.className = `option-button ${o.isBack ? 'back-button' : ''}`;
+            btn.innerText = o.label;
+            btn.onclick = () => handleOption(o.id, o.label, o.type, o.apiKey);
+            optsDiv.appendChild(btn);
+        });
+        
+        // Animación pequeña para los botones
+        optsDiv.style.animation = "fadeIn 0.5s ease";
+        chatMessages.appendChild(optsDiv);
+    }
+    
+    scrollToBottom();
+}
 
-            chatBox.appendChild(div);
-            scrollToBottom();
-        }
+function addUserMessage(text) {
+    const chatMessages = document.getElementById('chatMessages');
+    const row = document.createElement('div');
+    row.className = 'message-row user';
+    row.innerHTML = `<div class="message user">${text}</div>`;
+    chatMessages.appendChild(row);
+    scrollToBottom();
+}
 
-        function handleOptionClick(opt, currentMenuId) {
-            userMsg(opt.label);
+function scrollToBottom() {
+    const chatMessages = document.getElementById('chatMessages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
-            setTimeout(() => {
-                if (opt.type === 'leaf') {
-                    // ES UNA RESPUESTA FINAL
-                    const responseHTML = res[opt.apiKey];
-                    if (responseHTML) {
-                        botMsg(responseHTML);
-                    } else {
-                        botMsg("⚠️ Lo siento, información no disponible por el momento.");
-                    }
-                    // Opcional: Volver a mostrar las opciones del menú actual para no dejar al usuario atrapado
-                    // setTimeout(() => renderMenu(currentMenuId), 2000); 
-                } else {
-                    // ES UN SUBMENÚ
-                    renderMenu(opt.id);
-                }
-            }, 400);
-        }
+// Registro del Service Worker para PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('MuniBot registrado con éxito'))
+      .catch(err => console.log('Error al registrar SW', err));
+  });
+}
 
-        function botMsg(html) {
-            const div = document.createElement('div');
-            div.className = "message bot";
-            div.innerHTML = html;
-            chatBox.appendChild(div);
-            scrollToBottom();
-        }
-
-        function userMsg(text) {
-            const div = document.createElement('div');
-            div.className = "message user";
-            div.innerText = text;
-            chatBox.appendChild(div);
-            scrollToBottom();
-        }
-
-        function scrollToBottom() {
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-    </script>
+window.onload = initChat;
+</script>
 </body>
 </html>
