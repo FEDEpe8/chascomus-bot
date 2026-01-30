@@ -1,13 +1,13 @@
-const CACHE_NAME = 'muni-chascomus-v2'; // <--- IMPORTANTE: Cambié a v2
+const CACHE_NAME = 'muni-chascomus-v3'; // <--- ESTO FUERZA LA ACTUALIZACIÓN
 const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
-  './logo.png' // Asegúrate de que tu imagen se llame así
+  './logo.png' // Si tu logo es .jpg, cambialo acá también a .jpg
 ];
 
 self.addEventListener('install', event => {
-  self.skipWaiting(); // Fuerza la activación inmediata del nuevo SW
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
@@ -20,14 +20,13 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
-            console.log('Borrando caché antigua:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
     })
   );
-  self.clients.claim(); // Toma control de la página inmediatamente
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
