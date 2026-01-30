@@ -202,17 +202,16 @@
                 { id: 'viernes', label: 'Viernes', type: 'leaf', apiKey: 'esp_viernes' }
             ]
         },
-        seguridad: { 
+      seguridad: { 
             title: () => 'Seguridad y Trámites:', 
             options: [
                 { id: 'pamuv', label: '🆘 Asistencia Víctima (PAMUV)', type: 'leaf', apiKey: 'pamuv' },
-                { id: 'basapp', label: '🔔 Basapp (Alerta)', type: 'leaf', apiKey: 'basapp' },
+                { id: 'apps_seg', label: '📲 Descargar Apps (Basapp y SEM)', type: 'leaf', apiKey: 'apps_seguridad' }, /* <--- NUEVA LÍNEA COMBINADA */
+                { id: 'def_civil', label: '🌪️ Defensa Civil (103)', type: 'leaf', apiKey: 'defensa_civil' },
                 { id: 'lic_tramite', label: '🪪 Licencia (Carnet)', type: 'leaf', apiKey: 'lic_turno' },
                 { id: 'seg_academia', label: '🚗 Academia Conductores', type: 'leaf', apiKey: 'seg_academia' },
                 { id: 'seg_infracciones', label: '⚖️ Mis Infracciones', type: 'leaf', apiKey: 'seg_infracciones' },
-                { id: 'seg_medido', label: '🅿️ Estacionamiento Medido', type: 'leaf', apiKey: 'seg_medido' },
                 { id: 'ojos', label: '👁️ Ojos en Alerta', type: 'leaf', apiKey: 'ojos' },
-                { id: 'def_civil', label: '🌪️ Defensa Civil (103)', type: 'leaf', apiKey: 'defensa_civil' },
                 { id: 'poli', label: '📞 Comisaría', type: 'leaf', apiKey: 'poli' }
             ]
         },
@@ -431,7 +430,18 @@
         Atención ante temporales, caída de árboles y riesgo en vía pública.<br>
         📞 <a href="tel:103" class="wa-btn" style="background-color: #c0392b !important; text-align:center; display:block;">LLAMAR AL 103</a><br>
         📧 <a href="mailto:defensa.civil@chascomus.gob.ar">Enviar Correo Electrónico</a></div>`,
-        'basapp': `<div class="info-card"><strong>🔔 Basapp - Alerta Vecinal</strong><br>Botón antipánico y reporte de seguridad en tu celular.<br><br>📲 <b>Descargar App:</b><br>🤖 <a href="https://play.google.com/store/apps/details?id=ar.com.basapp.android.client" target="_blank">Android (Google Play)</a><br>🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank">iPhone (App Store)</a></div>`,
+       'apps_seguridad': `
+        <div class="info-card">
+            <strong>📲 Aplicaciones de Seguridad y Tránsito</strong><br><br>
+            🔔 <b>BASAPP (Alerta Vecinal):</b><br>
+            Botón antipánico y reportes.<br>
+            🤖 <a href="https://play.google.com/store/apps/details?id=ar.com.basapp.android.client" target="_blank">Descargar Android</a><br>
+            🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank">Descargar iPhone</a><br><br>
+            
+            🅿️ <b>SEM (Estacionamiento Medido):</b><br>
+            Gestioná tu estacionamiento.<br>
+            🤖 <a href="https://play.google.com/store/apps/details?id=ar.edu.unlp.sem.mobile" target="_blank">Descargar Android</a><br>
+            🍎 <a href="https://apps.apple.com/ar/app/sem-mobile/id1387705895" target="_blank">Descargar iPhone</a></div>`,
         'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
         'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
         'deportes_circuito': `<div class="info-card"><strong>🏃 Circuito de Calle</strong><br>Inscripciones, cronograma y resultados oficiales.<br>🔗 <a href="https://apps.chascomus.gob.ar/deportes/circuitodecalle/" target="_blank">IR A LA WEB</a></div>`,
