@@ -108,10 +108,11 @@
                 { id: 't_link', label: '🔗 Web de Turismo', link: 'https://linktr.ee/turismoch' }
             ]
         },
-        deportes: {
+       deportes: {
             title: () => 'Deportes:',
             options: [
-                { id: 'd_info', label: '📍 Dirección de Deportes', type: 'leaf', apiKey: 'deportes_info' }
+                { id: 'd_info', label: '📍 Dirección de Deportes', type: 'leaf', apiKey: 'deportes_info' },
+                { id: 'd_calle', label: '🏃 Circuito de Calle', type: 'leaf', apiKey: 'deportes_circuito' } // <--- NUEVA LÍNEA
             ]
         },
         desarrollo_menu: {
@@ -197,6 +198,7 @@
         // NUEVOS DATOS
         'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
         'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
+        'deportes_circuito': `<div class="info-card"><strong>🏃 Circuito de Calle</strong><br>Inscripciones, cronograma y resultados oficiales.<br>🔗 <a href="https://apps.chascomus.gob.ar/deportes/circuitodecalle/" target="_blank">IR A LA WEB</a></div>`,
         'link_147': `<div class="info-card"><strong>📝 ATENCIÓN AL VECINO 147</strong><br>🌐 <a href="https://147.chascomus.gob.ar/index.php?a=add" target="_blank">Cargar Ticket Online</a><br>📞 <a href="tel:147">Llamar al 147</a></div>`,
 
         // DATOS EXISTENTES
