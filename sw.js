@@ -1,16 +1,16 @@
-const CACHE_NAME = 'muni-chascomus-v5'; // <--- ESTO FUERZA LA ACTUALIZACIÓN
-const urlsToCache = [
+const CACHE_NAME = 'muni-chascomus-v6'; // <--- Ponele v6 o v7
+const assets = [
   './',
   './index.html',
   './manifest.json',
-  './logo.png' // Si tu logo es .jpg, cambialo acá también a .jpg
+  './logo.png' // O logo.jpg si es el que usás
 ];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+      .then(cache => cache.addAll(assets))
   );
 });
 
