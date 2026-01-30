@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MuniBot Chascomús</title>
     <meta name="theme-color" content="#004a7c">
+    
+    <meta name="author" content="Federico de Sistemas - Municipalidad de Chascomús">
+    <meta name="copyright" content="Municipalidad de Chascomús">
+    <meta name="description" content="Asistente Virtual Oficial desarrollado por el área de Sistemas.">
+
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="logo.png">
     
@@ -59,6 +64,7 @@
         .close-modal { position: absolute; top: 10px; right: 15px; font-size: 24px; font-weight: bold; color: #aaa; cursor: pointer; }
         .modal-h3 { color: var(--primary); margin-top: 0; }
         .modal-p { font-size: 0.9rem; color: #555; line-height: 1.5; margin-bottom: 15px; }
+        /* El DIV del autor debe estar vacío para que el script funcione */
         .modal-credit { font-size: 0.85rem; color: #777; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -94,10 +100,7 @@
         <p class="modal-p">
             Utiliza los botones del menú para navegar por las distintas secciones.
         </p>
-        <div class="modal-credit">
-            <strong>Creado por:</strong> [Federico de Sistemas]<br>
-            para la Municipalidad de Chascomús
-        </div>
+        <div class="modal-credit" id="authorCredit"></div>
     </div>
 </div>
 
@@ -112,20 +115,20 @@
     /* --- MENÚS --- */
     const MENUS = {
         main: { 
-        title: (name) => `¡Hola <b>${name}</b>! 👋 Soy el asistente virtual de Chascomús. ¿En qué puedo ayudarte?`, 
-        options: [
-            { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
-            { id: 'desarrollo_menu', label: '🤝 Acción Social' },
-            { id: 'turismo', label: '🏖️ Turismo' },
-            { id: 'deportes', label: '⚽ Deportes' },
-            { id: 'salud', label: '🏥 Salud' },
-            { id: 'obras', label: '🚧 Reclamos 147' },
-            { id: 'seguridad', label: '🛡️ Seguridad' },
-            { id: 'hacienda', label: '💰 HACIENDA - OMIC - PRODUCCION' },
-            { id: 'contacto_op', label: '☎️ Hablar con Operador', type: 'leaf', apiKey: 'contacto_gral' } ,// <--- NUEVA LÍNEA
-            { id: 'cultura', label: '🎭 Cultura y Agenda', type: 'submenu' }
-        ]
-    },
+            title: (name) => `¡Hola <b>${name}</b>! 👋 Soy el asistente virtual de Chascomús. ¿En qué puedo ayudarte?`, 
+            options: [
+                { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
+                { id: 'desarrollo_menu', label: '🤝 Acción Social' },
+                { id: 'turismo', label: '🏖️ Turismo' },
+                { id: 'deportes', label: '⚽ Deportes' },
+                { id: 'salud', label: '🏥 Salud' },
+                { id: 'obras', label: '🚧 Reclamos 147' },
+                { id: 'seguridad', label: '🛡️ Seguridad' },
+                { id: 'hacienda', label: '💰 Hacienda y Producción' },
+                { id: 'cultura', label: '🎭 Cultura y Agenda', type: 'submenu' },
+                { id: 'contacto_op', label: '☎️ Hablar con Operador', type: 'leaf', apiKey: 'contacto_gral' }
+            ]
+        },
         cultura: {
             title: () => '🎭 Agenda Cultural:',
             options: [
@@ -160,14 +163,14 @@
         salud: { 
             title: () => 'Gestión de Salud Pública:', 
             options: [
-                { id: 'centros', label: '🏥 CAPS (Salitas)' }, /* CORREGIDO: Ahora lleva a submenú */
+                { id: 'centros', label: '🏥 CAPS (Salitas)' }, 
                 { id: 'hospital_menu', label: '🏥 Hospital' },
                 { id: 'f_lista', label: '💊 Farmacias y Turnos', type: 'leaf', apiKey: 'farmacias_lista' },
                 { id: 'zoonosis', label: '🐾 Zoonosis', type: 'leaf', apiKey: 'zoo_rabia' },
                 { id: 'vac_hu', label: '💉 Vacunatorio', type: 'leaf', apiKey: 'vacunacion_info' }
             ]
         },
-        centros: { /* NUEVO SUBMENÚ para arreglar el problema de WA */
+        centros: { 
             title: () => 'Centros de Atención Primaria (CAPS):',
             options: [
                 { id: 'c_map', label: '📍 Ver Ubicaciones (Mapas)', type: 'leaf', apiKey: 'caps_mapas' },
@@ -192,11 +195,11 @@
                 { id: 'viernes', label: 'Viernes', type: 'leaf', apiKey: 'esp_viernes' }
             ]
         },
-      seguridad: { 
+        seguridad: { 
             title: () => 'Seguridad y Trámites:', 
             options: [
                 { id: 'pamuv', label: '🆘 Asistencia Víctima (PAMUV)', type: 'leaf', apiKey: 'pamuv' },
-                { id: 'apps_seg', label: '📲 Descargar Apps (Basapp y SEM)', type: 'leaf', apiKey: 'apps_seguridad' }, /* <--- NUEVA LÍNEA COMBINADA */
+                { id: 'apps_seg', label: '📲 Descargar Apps (Basapp y SEM)', type: 'leaf', apiKey: 'apps_seguridad' }, 
                 { id: 'def_civil', label: '🌪️ Defensa Civil (103)', type: 'leaf', apiKey: 'defensa_civil' },
                 { id: 'lic_tramite', label: '🪪 Licencia (Carnet)', type: 'leaf', apiKey: 'lic_turno' },
                 { id: 'seg_academia', label: '🚗 Academia Conductores', type: 'leaf', apiKey: 'seg_academia' },
@@ -209,7 +212,7 @@
             title: () => 'Hacienda, Tasas y Producción:', 
             options: [
                 { id: 'produccion_menu', label: '🏭 Producción y Empleo', type: 'submenu' },
-                { id: 'hab_menu', label: '🏬 Habilitaciones (Menú)', type: 'submenu' }, /* <--- ESTA ES LA NUEVA */
+                { id: 'hab_menu', label: '🏬 Habilitaciones (Menú)', type: 'submenu' }, 
                 { id: 'omic', label: '📢 OMIC (Defensa Consumidor)', type: 'leaf', apiKey: 'omic_info' },
                 { id: 'toma', label: '🤖 Hacienda Tomasa', type: 'leaf', apiKey: 'hac_tomasa' },
                 { id: 'deud', label: '🔍 Ver Deuda / Pagar', type: 'leaf', apiKey: 'hac_deuda' },
@@ -300,7 +303,7 @@
             🔗 <b>Linktree Inscripciones:</b><br>
             <a href="https://linktr.ee/visitasguiadas.turismoch" target="_blank">Ingresar al Linktree</a>
         </div>`,
-        /* --- NUEVO: OMIC --- */
+        
         'omic_info': `
         <div class="info-card">
             <strong>📢 OMIC (Defensa del Consumidor)</strong><br>
@@ -312,7 +315,6 @@
             📞 <b>Teléfonos:</b> 43-1287 / 42-5558
         </div>`,
 
-        /* --- ARREGLADO: LISTA WHATSAPP CAPS --- */
         'caps_wa': `
         <div class="info-card">
             <strong>📞 WhatsApp de los CAPS:</strong><br><br>
@@ -326,7 +328,6 @@
             🟢 <b>San Cayetano:</b> <a href="https://wa.me/5492241511430">2241-511430</a>
         </div>`,
 
-        /* --- 147 ATENCIÓN --- */
         'link_147': `
         <div class="info-card">
             <strong>📝 ATENCIÓN AL VECINO 147</strong><br><br>
@@ -340,7 +341,6 @@
             Nombre, DNI, Teléfono y Dirección del problema.
         </div>`,
 
-        /* --- SALUD MAPAS --- */
         'caps_mapas': `
         <div class="info-card">
             <strong>📍 Ubicaciones CAPS (Toque para ver mapa):</strong><br><br>
@@ -400,7 +400,6 @@
             📱 <i>Consultá las redes de "Secretaría de Salud Chascomús" para horarios actualizados.</i>
         </div>`,
 
-        /* --- RESTO DE DATOS --- */
         'tierra_vivienda': `
         <div class="info-card">
             <strong>🔑 Tierra y Vivienda</strong><br><br>
@@ -424,13 +423,13 @@
             <strong>📲 Aplicaciones de Seguridad y Tránsito</strong><br><br>
             🔔 <b>BASAPP (Alerta Vecinal):</b><br>
             Botón antipánico y reportes.<br>
-            🤖 <a href="https://play.google.com/store/apps/details?id=com.basapp.app" target="_blank">Descargar Android</a><br>
-            🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank">Descargar iPhone</a><br><br>
+            🤖 <a href="https://play.google.com/store/apps/details?id=ar.com.basapp.android.client" target="_blank" rel="noopener noreferrer">Descargar Android</a><br>
+            🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank" rel="noopener noreferrer">Descargar iPhone</a><br><br>
             
             🅿️ <b>SEM (Estacionamiento Medido):</b><br>
             Gestioná tu estacionamiento.<br>
-            🤖 <a href="https://play.google.com/store/apps/details?id=ar.edu.unlp.semmobile" target="_blank">Descargar Android</a><br>
-            🍎 <a href="https://apps.apple.com/ar/app/sem-mobile/id1387705895" target="_blank">Descargar iPhone</a></div>`,
+            🤖 <a href="https://play.google.com/store/apps/details?id=ar.edu.unlp.sem.mobile" target="_blank" rel="noopener noreferrer">Descargar Android</a><br>
+            🍎 <a href="https://apps.apple.com/ar/app/sem-mobile/id1387705895" target="_blank" rel="noopener noreferrer">Descargar iPhone</a></div>`,
         'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
         'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
         'deportes_circuito': `<div class="info-card"><strong>🏃 Circuito de Calle</strong><br>Inscripciones, cronograma y resultados oficiales.<br>🔗 <a href="https://apps.chascomus.gob.ar/deportes/circuitodecalle/" target="_blank">IR A LA WEB</a></div>`,
@@ -449,7 +448,7 @@
         'hac_tomasa': `<b>🤖 Hacienda Tomasa:</b><br>Portal de autogestión.<br>🔗 <a href="https://tomasa.chascomus.gob.ar/">INGRESAR</a>`, 
         'hac_agua': `<b>💧 Consumo de Agua:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
         'hac_deuda': `<b>🔍 Consulta de Deuda:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas">CONSULTAR AQUÍ</a>`,
-       /* --- HABILITACIONES --- */
+        
         'hab_gral': `
         <div class="info-card">
             <strong>🏢 Habilitación Comercial / Industrial</strong><br><br>
@@ -494,7 +493,7 @@
         <div class="info-card">
             <strong>🍷 Registro de Alcohol (REBA)</strong><br><br>
             Obligatorio para comercializar bebidas alcohólicas.<br><br>
-            📲 <b>WhatsApp HABILITACIONES:</b><br>
+            📲 <b>WhatsApp REBA:</b><br>
             <a href="https://wa.me/5492241559389" class="wa-btn" style="background-color:#25D366 !important; text-align:center;">💬 2241-559389</a><br>
             <small><i>⚠️ Solo mensajes escritos o audios. No llamadas.</i></small><br><br>
             📧 <b>Por Email:</b><br>
@@ -722,6 +721,22 @@
         const val = input.value.trim();
         if(!val) return;
 
+        /* --- 🔒 COMANDO SECRETO DE AUTOR --- */
+        if (val.toLowerCase() === 'autor' || val.toLowerCase() === 'creador') {
+            const firma = `
+            <div class="info-card" style="border-left: 5px solid #000; background: #fff;">
+                👨‍💻 <b>Desarrollo Original</b><br><br>
+                Este sistema fue diseñado y programado por:<br>
+                <b>Federico de Sistemas</b><br>
+                <i>Municipalidad de Chascomús</i><br>
+                © 2024 - Todos los derechos reservados.
+            </div>`;
+            addMessage(val, 'user');
+            setTimeout(() => addMessage(firma, 'bot'), 500);
+            input.value = "";
+            return;
+        }
+
         if (isAwaitingForm) {
             addMessage(val, 'user');
             input.value = "";
@@ -769,6 +784,26 @@
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js'); });
     }
+
+    /* --- 🔒 MENSAJE EN CONSOLA --- */
+    console.log("%c⛔ DETENTE", "color: red; font-size: 40px; font-weight: bold;");
+    console.log("%cEste código es propiedad intelectual de la Municipalidad de Chascomús y fue desarrollado por Federico Perez Speroni.", "font-size: 16px; color: #004a7c;");
+
+    /* --- 🔒 SISTEMA DE BLINDAJE DE AUTORÍA (AUTO-REPARACIÓN) --- */
+    (function() {
+        const _0x1 = "Q3JlYWRvIHBvcjogPGI+RmVkZXJpY28gZGUgU2lzdGVtYXM8L2I+PGJyPnBhcmEgbGEgTXVuaWNpcGFsaWRhZCBkZSBDaGFzY29tw7pz";
+        function _secure() {
+            const _el = document.getElementById('authorCredit');
+            const _txt = atob(_0x1); 
+            if (_el) {
+                if (_el.innerHTML !== _txt) { _el.innerHTML = _txt; }
+            } else {
+                document.body.innerHTML = '<h2 style="text-align:center;margin-top:50px;">⛔ Error de Integridad: Se ha modificado el código fuente original.</h2>';
+            }
+        }
+        window.addEventListener('load', _secure);
+        setInterval(_secure, 2000);
+    })();
 </script>
 </body>
 </html>
