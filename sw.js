@@ -1,4 +1,4 @@
-const CACHE_NAME = 'muni-chascomus-v17'; // <--- Siempre actualizar si se cambia el index a una version +
+const CACHE_NAME = 'muni-chascomus-v18'; // <--- Siempre actualizar si se cambia el index a una version +
 const assets = [
   './',
   './index.html',
