@@ -6,7 +6,7 @@
     <title>MuniBot Chascomús</title>
     <meta name="theme-color" content="#004a7c">
     
-    <meta name="author" content="Federico de Sistemas - Municipalidad de Chascomús">
+    <meta name="author" content="Federico Perez Speroni - Municipalidad de Chascomús">
     <meta name="copyright" content="Municipalidad de Chascomús">
     <meta name="description" content="Asistente Virtual Oficial desarrollado por el área de Sistemas.">
 
@@ -115,7 +115,7 @@
     /* --- MENÚS --- */
     const MENUS = {
         main: { 
-            title: (name) => `¡Hola <b>${name}</b>! 👋 Soy el asistente virtual de Chascomús. ¿En qué puedo ayudarte?`, 
+            title: (name) => `¡Hola <b>${name}</b>! 👋 Soy Julian el asistente virtual de Municipalidad de Chascomús. ¿Enpezemos la recorrida?`, 
             options: [
                 { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
                 { id: 'desarrollo_menu', label: '🤝 Acción Social' },
@@ -652,7 +652,7 @@
     }
 
     function showMenu(key) {
-        toggleInput(false); 
+        //toggleInput(false); 
         const menu = MENUS[key];
         const title = typeof menu.title === 'function' ? menu.title(userName) : menu.title;
         
@@ -722,13 +722,16 @@
         const val = input.value.trim();
         if(!val) return;
 
+        // Normalizamos el texto (todo a minúsculas) para que entienda "Hola", "hola" o "HOLA"
+        const texto = val.toLowerCase();
+
         /* --- 🔒 COMANDO SECRETO DE AUTOR --- */
-        if (val.toLowerCase() === 'autor' || val.toLowerCase() === 'creador') {
+        if (texto === 'autor' || texto === 'creador') {
             const firma = `
             <div class="info-card" style="border-left: 5px solid #000; background: #fff;">
                 👨‍💻 <b>Desarrollo Original</b><br><br>
                 Este sistema fue diseñado y programado por:<br>
-                <b>Federico Perez Speroni</b><br>
+                <b>Federico de Sistemas</b><br>
                 <i>Municipalidad de Chascomús</i><br>
                 © 2024 - Todos los derechos reservados.
             </div>`;
@@ -738,6 +741,7 @@
             return;
         }
 
+        /* --- LÓGICA DE FORMULARIOS --- */
         if (isAwaitingForm) {
             addMessage(val, 'user');
             input.value = "";
@@ -745,17 +749,116 @@
             return;
         }
 
+     /* --- PRIMER INGRESO (NOMBRE) --- */
         if (!userName) {
             addMessage(val, 'user');
             userName = val;
             localStorage.setItem('muni_user_name', val);
             input.value = "";
-            showMenu('main');
-        } else {
-            addMessage(val, 'user');
-            input.value = "";
-            setTimeout(() => addMessage("Por favor, utilizá los botones del menú para navegar.", 'bot'), 600);
+            
+            setTimeout(() => {
+                // 1. Saludo
+                addMessage(`¡Mucho gusto, <b>${userName}</b>! Soy Julián, tu asistente virtual. 🤖`, 'bot');
+                
+                // 2. Definimos los botones de "Acceso Rápido"
+                const atajos = [
+                    { id: 'ag_actual', label: '🎭 Agenda Cultural', type: 'leaf', apiKey: 'agenda_actual' },
+                    { id: 'f_lista', label: '💊 Farmacias de Turno', type: 'leaf', apiKey: 'farmacias_lista' },
+                    { id: 'h_tur', label: '📅 Turnos Hospital', type: 'leaf', apiKey: 'h_turnos' },
+                    { id: 'nav_home', label: '☰ VER MENÚ COMPLETO' } // Este lleva al menú principal
+                ];
+
+                // 3. Enviamos el mensaje CON los botones
+                addMessage(`Acá tenés algunos accesos rápidos para empezar, o podés escribir <b>"Menú"</b> para ver todo:`, 'bot', atajos);
+            }, 600);
+            return;
         }
+
+        // Mostramos lo que escribió el usuario
+        addMessage(val, 'user');
+        input.value = "";
+
+        /* --- 🧠 CEREBRO DE RESPUESTAS RÁPIDAS --- */
+        
+        // 1. SALUDOS
+        if (['hola', 'buen dia', 'buenas', 'que tal'].some(palabra => texto.includes(palabra))) {
+            setTimeout(() => addMessage(`¡Hola <b>${userName}</b>! 👋 Qué gusto saludarte. ¿En qué te puedo ayudar hoy? Seleccioná una opción del menú.`, 'bot'), 600);
+            return;
+        }
+
+        // 2. AGRADECIMIENTOS
+        if (['gracias', 'muchas gracias', 'genial', 'excelente'].some(palabra => texto.includes(palabra))) {
+            setTimeout(() => addMessage("¡De nada! Es un placer ayudarte. 😊", 'bot'), 600);
+            return;
+        }
+
+        // 3. PEDIDO DE AYUDA / MENÚ
+        // Agregué variantes como 'botones', 'opciones'
+        if (['ayuda', 'menu', 'menú', 'inicio', 'botones', 'opciones', "me ayudas", "ayudame"].some(palabra => texto.includes(palabra))) {
+            setTimeout(() => {
+                addMessage("¡Entendido! Acá tenés el menú principal:", 'bot');
+                resetToMain(); // <--- ESTO MUESTRA LOS BOTONES
+            }, 600);
+            return;
+        }
+
+        // 4. INSULTOS (Opcional - Filtro de educación)
+        if (['boludo', 'tonto', 'inutil', 'mierda'].some(palabra => texto.includes(palabra))) {
+            setTimeout(() => addMessage("Por favor, mantengamos el respeto. Soy un robot intentando ayudar. 🤖💔", 'bot'), 600);
+            return;
+        }
+
+        // ... (Acá arriba estaban los insultos y saludos)
+
+        /* --- 5. BUSCADOR INTELIGENTE (SUPER CEREBRO 🧠) --- */
+        // Acá definimos qué palabra activa qué botón.
+        
+        const diccionario = {
+            // PALABRA CLAVE      // QUÉ BOTÓN ACTIVA
+            'farmacia':   { type: 'leaf', apiKey: 'farmacias_lista', label: '💊 Farmacias' },
+            'agenda':     { type: 'leaf', apiKey: 'agenda_actual', label: '🎭 Agenda Cultural' },
+            'cultural':   { type: 'leaf', apiKey: 'agenda_actual', label: '🎭 Agenda Cultural' },
+            'teatro':     { type: 'leaf', apiKey: 'agenda_actual', label: '🎭 Agenda Cultural' },
+            'turno':      { type: 'leaf', apiKey: 'h_turnos', label: '📅 Turnos Hospital' },
+            'hospital':   { id: 'hospital_menu', label: '🏥 Menú Hospital' }, 
+            '147':        { type: 'leaf', apiKey: 'link_147', label: '📝 Reclamos 147' },
+            'reclamo':    { type: 'leaf', apiKey: 'link_147', label: '📝 Reclamos 147' },
+            'luz':        { type: 'leaf', apiKey: 'link_147', label: '📝 Reclamos 147' },
+            'basura':     { type: 'leaf', apiKey: 'obras_basura', label: '♻️ Recolección' },
+            'poda':       { type: 'leaf', apiKey: 'poda', label: '🌿 Poda' },
+            'deporte':    { id: 'deportes', label: '⚽ Deportes' },           
+            'turismo':    { id: 'turismo', label: '🏖️ Turismo' },            
+            'reba_hab':   { type: 'leaf', apiKey: 'hab_reba', label: '🍷 REBA' },
+            'licencia':   { type: 'leaf', apiKey: 'lic_turno', label: '🪪 Licencias' },
+            'carnet':     { type: 'leaf', apiKey: 'lic_turno', label: '🪪 Licencias' },
+            'castracion': { type: 'leaf', apiKey: 'zoo_rabia', label: '🐾 Zoonosis' },
+            'vacuna':     { type: 'leaf', apiKey: 'vacunacion_info', label: '💉 Vacunación' },
+            'empleo':     { type: 'leaf', apiKey: 'prod_empleo', label: '👷 Empleo' },
+            'emprende':   { id: 'produccion_menu', label: '👷 Producción y Empleo' }, 
+            'caps':       { id: 'centros', label: '🏥 Caps' },
+            'salud':      { id: 'salud', label: '🏥 Menú Salud' },         // Corregido (antes salud_menu)
+            'seguridad':  { id: 'seguridad', label: '🛡️ Menú Seguridad' }, // Corregido (antes seguridad_menu)
+            'clima':      { type: 'leaf', apiKey: 'defensa_civil', label: '🌪️ Defensa Civil' },
+            'reba':       { type: 'leaf', apiKey: 'hab_reba', label: '🍷 REBA' },
+            'espacio':    { type: 'leaf', apiKey: 'hab_espacio', label: '🍔 Uso de Espacio Público' }, // Acorté a "espacio" para que detecte más fácil
+            'foodtruck':  { type: 'leaf', apiKey: 'hab_espacio', label: '🍔 Uso de Espacio Público' },
+            'local':      { type: 'leaf', apiKey: 'hab_gral', label: '🏢 Habilitación Comercial'  },  
+            'medidor':    { type: 'leaf', apiKey: 'hac_agua', label: '💧 Consumo de Agua'  }, 
+            'boleta':     { type: 'leaf', apiKey: 'hac_boleta', label: '📧 Boleta Digital' }
+        };
+        // El bot revisa si alguna palabra clave está en lo que escribió el usuario
+        for (let palabra in diccionario) {
+            if (texto.includes(palabra)) { // Si escribe "quiero saber de farmacias", detecta "farmacia"
+                const accion = diccionario[palabra];
+                setTimeout(() => {
+                    addMessage(`¡Encontré esto sobre <b>"${palabra.toUpperCase()}"</b>! 👇`, 'bot');
+                    handleAction(accion); // <--- ESTO SIMULA EL CLIC AUTOMÁTICO
+                }, 600);
+                return; // Cortamos acá para que no siga buscando
+            }
+        }
+        /* --- RESPUESTA POR DEFECTO (Si no entendió nada) --- */
+        setTimeout(() => addMessage("No entendí tu mensaje. 🤔<br>Por favor, <b>utilizá los botones del menú</b> para navegar o escribí 'Ayuda' para volver al inicio.", 'bot'), 600);
     }
 
     function resetToMain() {
