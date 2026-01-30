@@ -122,9 +122,17 @@
             { id: 'obras', label: '🚧 Reclamos 147' },
             { id: 'seguridad', label: '🛡️ Seguridad' },
             { id: 'hacienda', label: '💰 HACIENDA - OMIC - PRODUCCION' },
-            { id: 'contacto_op', label: '☎️ Hablar con Operador', type: 'leaf', apiKey: 'contacto_gral' } // <--- NUEVA LÍNEA
+            { id: 'contacto_op', label: '☎️ Hablar con Operador', type: 'leaf', apiKey: 'contacto_gral' } ,// <--- NUEVA LÍNEA
+            { id: 'cultura', label: '🎭 Cultura y Agenda', type: 'submenu' }
         ]
     },
+        cultura: {
+            title: () => '🎭 Agenda Cultural:',
+            options: [
+                { id: 'ag_feb', label: '📅 Agenda Febrero', type: 'leaf', apiKey: 'agenda_feb' },
+                { id: 'ag_mar', label: '📅 Agenda Marzo', type: 'leaf', apiKey: 'agenda_mar' },
+            ]
+        },
         turismo: {
             title: () => 'Turismo y Cultura:',
             options: [
@@ -230,6 +238,29 @@
 
     /* --- RESPUESTAS (Base de Datos HTML) --- */
     const RES = {
+        'agenda_feb': `
+        <div class="info-card">
+            <strong>📅 Agenda Febrero 2026</strong><br><br>
+            🌕 <b>Sáb 1/2 - Remada Luna Llena:</b><br>
+            Kayak & Tablas al atardecer. Club de Pesca y Náutica. (Horario a confirmar).<br><br>
+            🎬 <b>Vie 6/2 - Audiovisual:</b><br>
+            "Mis imágenes diarias". C.C. Vieja Estación, 21hs.<br><br>
+            🎭 <b>Sáb 7/2 - Teatro:</b><br>
+            "Amores y Desamores". Casa de Casco, 21hs. ($18.000).<br><br>
+            🧘 <b>Miércoles - Yoga Vital:</b><br>
+            18:30hs en Paseo de los Inmigrantes (Gratis).</div>`,
+
+        'agenda_mar': `
+        <div class="info-card">
+            <strong>📅 Agenda Marzo 2026</strong><br><br>
+            🎭 <b>Visitas Guiadas Dramatizadas:</b><br>
+            En Casa de Casco y Vieja Estación (Fechas a confirmar).<br><br>
+            🏛️ <b>Espacios Permanentes:</b><br>
+            • Museo Pampeano (Mar-Vie 9-15)<br>
+            • Vieja Estación (Lun-Vie 9-15)<br>
+            • Casa de Casco (9-15, Miér cerrado)<br><br>
+            <i>Consultá la carpeta completa para más detalles.</i>
+        </div>`,
         /* --- NUEVO: OMIC --- */
         'omic_info': `
         <div class="info-card">
@@ -376,8 +407,7 @@
         'esp_miercoles': `<b>🩺 Miércoles:</b> Obstetricia, Clínica Médica, Oftalmología.`,
         'esp_jueves': `<b>🩺 Jueves:</b> Nutrición, Pediatría, Cirugía.`,
         'esp_viernes': `<b>🩺 Viernes:</b> Neurología, Clínica Médica, Psiquiatría.`,
-        'contacto_gral': `
-    <div class="info-card">
+        'contacto_gral': `<div class="info-card">
         <strong>🏛️ Contacto Municipalidad</strong><br>
         <i>Canales de atención directa:</i><br><br>
         📞 <b>Teléfono Fijo (Conmutador):</b><br>
