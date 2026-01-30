@@ -121,7 +121,21 @@
                 { id: 'salud', label: '🏥 Salud' },
                 { id: 'obras', label: '🚧 Reclamos 147' },
                 { id: 'seguridad', label: '🛡️ Seguridad' },
-                { id: 'hacienda', label: '💰 Tasas y OMIC' }
+                { id: 'hacienda', label: '💰 Tasas y OMIC' },
+                main: { 
+        title: (name) => `¡Hola <b>${name}</b>! 👋 Soy el asistente virtual de Chascomús. ¿En qué puedo ayudarte?`, 
+        options: [
+            { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
+            { id: 'desarrollo_menu', label: '🤝 Acción Social' },
+            { id: 'turismo', label: '🏖️ Turismo' },
+            { id: 'deportes', label: '⚽ Deportes' },
+            { id: 'salud', label: '🏥 Salud' },
+            { id: 'obras', label: '🚧 Reclamos 147' },
+            { id: 'seguridad', label: '🛡️ Seguridad' },
+            { id: 'hacienda', label: '💰 Tasas y OMIC' },
+            { id: 'contacto_op', label: '☎️ Hablar con Operador', type: 'leaf', apiKey: 'contacto_gral' } // <--- NUEVA LÍNEA
+        ]
+    },
             ]
         },
         turismo: {
@@ -198,14 +212,23 @@
             ]
         },
         hacienda: { 
-            title: () => 'Hacienda, Tasas y OMIC:', 
+            title: () => 'Hacienda, Tasas y Producción:', 
             options: [
-                { id: 'omic', label: '📢 OMIC (Defensa Consumidor)', type: 'leaf', apiKey: 'omic_info' }, /* NUEVO */
+                { id: 'produccion_menu', label: '🏭 Producción y Empleo', type: 'submenu' }, // <--- NUEVO
+                { id: 'omic', label: '📢 OMIC (Defensa Consumidor)', type: 'leaf', apiKey: 'omic_info' },
                 { id: 'toma', label: '🤖 Hacienda Tomasa', type: 'leaf', apiKey: 'hac_tomasa' },
                 { id: 'deud', label: '🔍 Ver Deuda / Pagar', type: 'leaf', apiKey: 'hac_deuda' },
                 { id: 'hac_agua', label: '💧 Agua', type: 'leaf', apiKey: 'hac_agua' },
                 { id: 'boleta', label: '📧 Boleta Digital', type: 'leaf', apiKey: 'hac_boleta' },
                 { id: 'hab', label: '🏬 Habilitación', type: 'leaf', apiKey: 'hac_hab' }
+            ]
+        },
+        produccion_menu: {
+            title: () => 'Secretaría de Producción:',
+            options: [
+                { id: 'prod_empleo', label: '👷 Oficina de Empleo', type: 'leaf', apiKey: 'prod_empleo' },
+                { id: 'prod_emprende', label: '🚀 Emprendedores (PUPAAs)', type: 'leaf', apiKey: 'prod_emprende' },
+                { id: 'prod_contacto', label: '📍 Contacto y Dirección', type: 'leaf', apiKey: 'prod_contacto' }
             ]
         },
         obras: { 
@@ -365,7 +388,51 @@
         'esp_martes': `<b>🩺 Martes:</b> Cardiología, Traumatología, Pediatría.`,
         'esp_miercoles': `<b>🩺 Miércoles:</b> Obstetricia, Clínica Médica, Oftalmología.`,
         'esp_jueves': `<b>🩺 Jueves:</b> Nutrición, Pediatría, Cirugía.`,
-        'esp_viernes': `<b>🩺 Viernes:</b> Neurología, Clínica Médica, Psiquiatría.`
+        'esp_viernes': `<b>🩺 Viernes:</b> Neurología, Clínica Médica, Psiquiatría.`,
+        'contacto_gral': `
+    <div class="info-card">
+        <strong>🏛️ Contacto Municipalidad</strong><br>
+        <i>Canales de atención directa:</i><br><br>
+        📞 <b>Teléfono Fijo (Conmutador):</b><br>
+        Atención de 7:30 a 13:30 hs.<br>
+        <a href="tel:02241431341" class="wa-btn" style="background-color: #004a7c !important; text-align:center;">📞 LLAMAR AL 43-1341</a><br>
+        
+        📲 <b>WhatsApp Operador:</b><br>
+        Consultas y reclamos.<br>
+        <a href="https://wa.me/5492241559397" class="wa-btn" style="text-align:center;">💬 CHATEAR AHORA</a><br>
+        
+        📍 <b>Mesa de Entradas:</b><br>
+        Cr. Cramer 270.</div>`,
+        'prod_empleo': `
+        <div class="info-card">
+            <strong>👷 Oficina de Empleo</strong><br><br>
+            Intermediación laboral y programas de capacitación.<br><br>
+            📋 <b>Servicios:</b><br>
+            • Bolsa de trabajo.<br>
+            • Programa "Jóvenes con Más y Mejor Trabajo".<br>
+            • Entrenamientos laborales.<br><br>
+            📍 <b>Sede:</b> Maipú 415.<br>
+            ⏰ <b>Horario:</b> Lun a Vie de 8 a 13 hs.
+        </div>`,
+
+        'prod_emprende': `
+        <div class="info-card">
+            <strong>🚀 Chascomús Emprende</strong><br><br>
+            Apoyo a emprendedores y productores locales.<br><br>
+            🍞 <b>PUPAAs:</b><br>
+            Registro de Pequeñas Unidades Productivas de Alimentos Artesanales.<br><br>
+            🤝 <b>Compre Chascomús:</b><br>
+            Fomento al consumo de productos locales.<br><br>
+            📧 <b>Consultas:</b> <a href="mailto:produccion@chascomus.gob.ar">produccion@chascomus.gob.ar</a>
+        </div>`,
+
+        'prod_contacto': `
+        <div class="info-card">
+            <strong>🏭 Dirección de Producción</strong><br><br>
+            📍 <b>Dirección:</b> Maipú 415.<br>
+            📞 <b>Teléfono:</b> <a href="tel:02241436365">43-6365</a><br>
+            📧 <b>Email:</b> <a href="mailto:produccion@chascomus.gob.ar">produccion@chascomus.gob.ar</a><br><br>
+            ⏰ <b>Atención:</b> Lunes a Viernes de 8:00 a 13:30 hs.</div>`,
     };
 
     /* --- LÓGICA DE INTERFAZ Y NAVEGACIÓN --- */
