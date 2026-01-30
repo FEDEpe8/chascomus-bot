@@ -151,10 +151,9 @@
         salud: { 
             title: () => 'Gestión de Salud Pública:', 
             options: [
-                { id: 'centros', label: '🏥 CAPS (Salitas)' },
+                { id: 'centros', label: '🏥 CAPS (Mapas)', type: 'leaf', apiKey: 'caps_mapas' },
                 { id: 'hospital_menu', label: '🏥 Hospital' },
-                { id: 'f_turno', label: '💊 Farmacias de Turno', type: 'leaf', apiKey: 'farmacias_turno' },
-                { id: 'f_lista', label: '💊 Lista Farmacias', type: 'leaf', apiKey: 'farmacias_lista' },
+                { id: 'f_lista', label: '💊 Farmacias y Turnos', type: 'leaf', apiKey: 'farmacias_lista' },
                 { id: 'zoonosis', label: '🐾 Zoonosis', type: 'leaf', apiKey: 'zoo_rabia' },
                 { id: 'vac_hu', label: '💉 Vacunatorio', type: 'leaf', apiKey: 'vacunacion_info' }
             ]
@@ -177,18 +176,11 @@
                 { id: 'viernes', label: 'Viernes', type: 'leaf', apiKey: 'esp_viernes' }
             ]
         },
-        centros: {
-            title: () => 'Atención Primaria (CAPS):',
-            options: [
-                { id: 'c_wa', label: '📞 WhatsApp CAPS', type: 'leaf', apiKey: 'caps_wa' },
-                { id: 'c_map', label: '📍 Ubicaciones', type: 'leaf', apiKey: 'caps_mapas' }
-            ]
-        },
         seguridad: { 
             title: () => 'Seguridad y Trámites:', 
             options: [
-                { id: 'pamuv', label: '🆘 Asistencia Víctima (PAMUV)', type: 'leaf', apiKey: 'pamuv' }, /* NUEVO */
-                { id: 'basapp', label: '🔔 Basapp (Alerta)', type: 'leaf', apiKey: 'basapp' }, /* NUEVO */
+                { id: 'pamuv', label: '🆘 Asistencia Víctima (PAMUV)', type: 'leaf', apiKey: 'pamuv' },
+                { id: 'basapp', label: '🔔 Basapp (Alerta)', type: 'leaf', apiKey: 'basapp' },
                 { id: 'lic_tramite', label: '🪪 Licencia (Carnet)', type: 'leaf', apiKey: 'lic_turno' },
                 { id: 'seg_academia', label: '🚗 Academia Conductores', type: 'leaf', apiKey: 'seg_academia' },
                 { id: 'seg_infracciones', label: '⚖️ Mis Infracciones', type: 'leaf', apiKey: 'seg_infracciones' },
@@ -210,8 +202,8 @@
         obras: { 
             title: () => 'Atención al Vecino 147:', 
             options: [
-                { id: 'n_147', label: '📝 Iniciar Reclamo 147', type: 'form_147' },
-                { id: 'info_147', label: 'ℹ️ Info y Teléfonos', type: 'leaf', apiKey: 'link_147' },
+                { id: 'n_147', label: '📝 Iniciar Reclamo 147 (Chat)', type: 'form_147' },
+                { id: 'info_147', label: 'ℹ️ Info, Web y Teléfonos', type: 'leaf', apiKey: 'link_147' },
                 { id: 'poda', label: '🌿 Poda', type: 'leaf', apiKey: 'poda' },
                 { id: 'obras_basura', label: '♻️ Recolección', type: 'leaf', apiKey: 'obras_basura' }
             ]
@@ -220,15 +212,86 @@
 
     /* --- RESPUESTAS (Base de Datos HTML) --- */
     const RES = {
-        'pamuv': `
-        <div class="info-card" style="border-left: 5px solid #c0392b;">
-            <strong style="color: #c0392b;">🆘 PAMUV (Asistencia a la Víctima)</strong><br><br>
-            Atención, contención y asesoramiento a personas víctimas de delitos o situaciones de violencia.<br><br>
-            🛡️ <b>Plan Integral de Seguridad 2025-2027</b><br><br>
-            🚨 <b>ATENCIÓN 24 HORAS:</b><br>
-            Línea permanente para emergencias o consultas.<br>
-            <a href="https://wa.me/5492241514881" class="wa-btn" style="background-color: #c0392b !important;">📞 2241-514881 (WhatsApp)</a>
+        /* --- 147 ATENCIÓN --- */
+        'link_147': `
+        <div class="info-card">
+            <strong>📝 ATENCIÓN AL VECINO 147</strong><br><br>
+            💻 <b>Web Autogestión (24/7):</b><br>
+            Cargá tu ticket y seguí el caso.<br>
+            🔗 <a href="https://147.chascomus.gob.ar" target="_blank">147.chascomus.gob.ar</a><br><br>
+            📧 <b>Correo:</b> <a href="mailto:atencionalvecino@chascomus.gob.ar">atencionalvecino@chascomus.gob.ar</a><br><br>
+            📞 <b>Teléfono (Línea 147):</b><br>
+            Lun a Vie de 8 a 15 horas.<br><br>
+            📋 <b>Datos necesarios:</b><br>
+            Nombre, DNI, Teléfono y Dirección del problema.
         </div>`,
+
+        /* --- SALUD ACTUALIZADO --- */
+        'caps_mapas': `
+        <div class="info-card">
+            <strong>📍 Ubicaciones CAPS (Toque para ver mapa):</strong><br><br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=CIC+30+de+Mayo+Chascomus" target="_blank">CIC 30 de Mayo</a> (Bvd. 5 y Calle 2)<br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=Barrio+Jardin+Chascomus" target="_blank">Barrio Jardín</a> (Tucumán e/ Quintana)<br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+San+Luis+Chascomus" target="_blank">San Luis</a> (Chubut 755)<br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+El+Porteño+Chascomus" target="_blank">El Porteño</a> (Lucio Mansilla)<br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+Gallo+Blanco+Chascomus" target="_blank">Gallo Blanco</a> (Estados Unidos)<br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+Ipora+Chascomus" target="_blank">Iporá</a> (Sargento Cabral 387)<br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+La+Noria+Chascomus" target="_blank">La Noria</a> (Grito de Dolores)<br>
+            • <a href="https://www.google.com/maps/search/?api=1&query=CAPS+San+Cayetano+Chascomus" target="_blank">San Cayetano</a> (Gabino Ezeiza)<br><br>
+            📲 <b>WhatsApp:</b> Seleccioná la opción "WhatsApp CAPS" para pedir turnos.
+        </div>`,
+
+        'farmacias_lista': `
+        <div class="info-card">
+            <strong>📍 Farmacias en Chascomús:</strong><br><br>
+            • <b>Alfonsín:</b> Libres del Sur 121<br>
+            • <b>Aprile:</b> Av. Lastra 115<br>
+            • <b>Batastini:</b> Cramer 70<br>
+            • <b>Belgrano:</b> Belgrano 649<br>
+            • <b>Bellingieri:</b> H. Yrigoyen 78<br>
+            • <b>Cangialosi:</b> Garay 56<br>
+            • <b>Chascomús:</b> Av. Lastra 350<br>
+            • <b>Del Norte:</b> El Ombú 102<br>
+            • <b>Farmasur:</b> Bahía Blanca 91<br>
+            • <b>Malena:</b> Escribano y Machado<br>
+            • <b>Moriset:</b> Av. Lastra 591<br>
+            • <b>Oria:</b> Libres del Sur 413<br>
+            • <b>Pasteur:</b> Libres del Sur 302<br>
+            • <b>Pensa:</b> H. Yrigoyen 710<br>
+            • <b>Pozzi:</b> Rioja 28<br>
+            • <b>Puyssegur:</b> Libres del Sur 946<br><br>
+            💊 <a href="https://www.turnofarma.com/turnos/ar/ba/chascomus" target="_blank" class="wa-btn" style="background:#2ecc71 !important;">VER FARMACIAS DE TURNO</a>
+        </div>`,
+
+        'zoo_rabia': `
+        <div class="info-card" style="border-left: 5px solid #f1c40f;">
+            <strong style="color:#d35400;">🐾 Quirófano Móvil (Castración)</strong><br><br>
+            📅 <b>Lunes 3 de Febrero</b><br>
+            ⏰ <b>A partir de las 8:30hs</b><br>
+            📍 <b>Barrio Los Sauces</b> (Destacamento policial)<br><br>
+            ✅ <b>GRATIS</b> - Revisación Clínica.<br>
+            🐕 <b>Requisito:</b> Llevar la mascota con collar, correa y/o transportadora.<br><br>
+            🏢 <b>Sede Zoonosis:</b> Mendoza 95.
+        </div>`,
+
+        'vacunacion_info': `
+        <div class="info-card">
+            <strong>💉 Vacunación</strong><br><br>
+            🏥 <b>Hospital San Vicente de Paul:</b><br>
+            Vacunatorio central. Prioridad: Niños (6m a 2a), gestantes y puérperas.<br><br>
+            🏠 <b>Puntos Barriales:</b><br>
+            CIC "Dr. Quintín" (30 de Mayo) y otros CAPS.<br><br>
+            📋 <b>Info Importante:</b><br>
+            • <b>Demanda espontánea</b> (No requiere orden médica).<br>
+            • <b>Requisitos:</b> Llevar DNI y Libreta de Vacunación.<br><br>
+            📱 <i>Consultá las redes de "Secretaría de Salud Chascomús" para horarios actualizados.</i>
+        </div>`,
+
+        /* --- RESTO DE DATOS (YA CARGADOS) --- */
+        'tierra_vivienda': `<div class="info-card"><strong>🔑 Tierra y Vivienda</strong><br><br>📋 <b>Registro de Demanda Habitacional:</b> Inscripción para mayores de 18 años sin vivienda/terreno (con DNI).<br>🏠 <b>Bien de Familia:</b> Protección jurídica de la vivienda (trámite con firma digital).<br>🗺️ <b>Gestión de Tierras:</b> Planos de mensura, numeración y catastro.<br><br>🔗 <a href="https://apps.chascomus.gob.ar/vivienda/" target="_blank">IR AL SITIO WEB</a></div>`,
+        'mediacion_info': `<div class="info-card"><strong>⚖️ Mediación Comunitaria</strong><br>Resolución pacífica y gratuita de conflictos vecinales (ruidos, mascotas, edilicios).<br>📍 <b>Acercate a:</b> Moreno 259.</div>`,
+        'uda_info': `<div class="info-card"><strong>📍 Puntos UDA (Atención en Barrios)</strong><br><i>Acercate a tu punto más cercano:</i><br><br>🔹 <b>UDA 1 (San Luis):</b> Chubut 755 (Mar/Vie 9-12).<br>🔹 <b>UDA 2 (San José Obrero):</b> F. Chapa 625 (Mar/Vie 9-12).<br>🔹 <b>UDA 3 (El Porteño):</b> Mansilla y Calle 3 (Vie 9-12).<br>🔹 <b>UDA 4 (30 de Mayo):</b> Bvd. 5 y Calle 2 (Vie 9-12).<br>🔹 <b>UDA 5 (B. Jardín):</b> J. Quintana e/ Misiones (Mar/Mié 9-12).<br>🔹 <b>UDA 6 (Gallo Blanco):</b> EE.UU. y Las Flores (Lun 9-12).<br>🔹 <b>UDA 7 (San Cayetano):</b> Comedor (Mar 9-12).<br>🔹 <b>UDA 8 (Políticas Com.):</b> Sarmiento 42 (Lun-Vie 8-12).<br>🔹 <b>UDA 9 (Iporá):</b> Perú y S. Cabral (Jue 9-12).<br><br>🚨 <b>Guardia 24hs:</b> <a href="https://wa.me/5492241559397">2241-559397</a></div>`,
+        'pamuv': `<div class="info-card" style="border-left: 5px solid #c0392b;"><strong style="color: #c0392b;">🆘 PAMUV (Asistencia a la Víctima)</strong><br><br>Atención, contención y asesoramiento a personas víctimas de delitos o situaciones de violencia.<br><br>🛡️ <b>Plan Integral de Seguridad 2025-2027</b><br><br>🚨 <b>ATENCIÓN 24 HORAS:</b><br>Línea permanente para emergencias o consultas.<br><a href="https://wa.me/5492241514881" class="wa-btn" style="background-color: #c0392b !important;">📞 2241-514881 (WhatsApp)</a></div>`,
         'basapp': `<div class="info-card"><strong>🔔 Basapp - Alerta Vecinal</strong><br>Botón antipánico y reporte de seguridad en tu celular.<br><br>📲 <b>Descargar App:</b><br>🤖 <a href="https://play.google.com/store/apps/details?id=ar.com.basapp.android.client" target="_blank">Android (Google Play)</a><br>🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank">iPhone (App Store)</a></div>`,
         'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
         'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
@@ -241,11 +304,7 @@
         'poli': `📞 <b>Policía:</b> 42-2222 | 🎥 <b>COM:</b> 43-1333`,
         'politicas_gen': `<div class="info-card" style="border-left: 5px solid #9b59b6;"><strong style="color: #8e44ad; font-size: 1rem;">💜 Género y Diversidad</strong><br><br><div style="font-size: 0.85rem; margin-bottom: 12px;">🚨 <b>Guardia 24/7:</b> Orientación y acompañamiento en casos de violencia.<br>🧠 <b>Equipo Técnico:</b> Abogadas, psicólogas y trabajadoras sociales.<br>🏠 <b>Hogar de Tránsito:</b> Alojamiento temporal para mujeres en riesgo.<br>🗣️ <b>Varones:</b> Espacio de abordaje y deconstrucción de conductas violentas.<br>👮‍♀️ <b>Articulación:</b> Trabajo conjunto con Comisaría de la Mujer.</div><div style="background: #fdf2ff; padding: 10px; border-radius: 8px; font-size: 0.9rem;">📍 <b>Oficina:</b> Moreno 259 (Lun-Vie 9-14hs)<br>☎️ <b>Fijo Oficina:</b> <a href="tel:02241530448">2241-530448</a><br>🚓 <b>Comisaría Mujer:</b> <a href="tel:02241422653">42-2653</a></div><a href="https://wa.me/5492241559397" target="_blank" class="wa-btn" style="background-color: #8e44ad !important;">🚨 GUARDIA 24HS (WhatsApp)</a></div>`,
         'asistencia_social': `<div class="info-card" style="border-left: 5px solid #e67e22;"><strong style="color: #d35400;">🍎 Programa Alimentario (CAM)</strong><br><br>📦 <b>RETIRO DE MÓDULOS:</b><br>📍 <b>Lugar:</b> Depósito de calle Juárez.<br>⏰ <b>Horario:</b> 8:00 a 14:00 hs.<br><br>📋 <b>Requisitos:</b><br>• Presentar DNI (Obligatorio).<br>• Documentación de salud/social (ej: Celíacos) si corresponde.<br><br>🏢 <b>Atención Social General:</b><br>Para entrevistas o trámites: Moreno 259.<br><br>📞 <b>CONSULTAS Y CRONOGRAMA:</b><br>Te recomendamos confirmar tu fecha antes de ir:<br><a href="https://wa.me/5492241559397" class="wa-btn" style="background-color: #d35400 !important;">📲 WhatsApp Guardia</a></div>`,
-        'mediacion_info': `<strong>⚖️ Mediación:</strong><br>📍 Moreno Nº 259.`,
-        'uda_info': `<strong>📍 Puntos UDA:</strong> Descentralización en barrios.`,
-        'tierra_vivienda': `<b>🔑 Tierra y Vivienda:</b> Dorrego y Bolívar.`,
         'ninez': `<b>👶 Niñez:</b> Mendoza Nº 95. 📞 43-1146.`,
-        'link_147': `<div class="info-card"><strong>📝 ATENCIÓN AL VECINO 147</strong><br>🌐 <a href="https://147.chascomus.gob.ar/index.php?a=add" target="_blank">Cargar Ticket Online</a><br>📞 <a href="tel:147">Llamar al 147</a></div>`,
         'poda': `🌿 <a href="https://apps.chascomus.gob.ar/podaresponsable/solicitud.php">Solicitud Poda</a>`,
         'obras_basura': `♻️ <b>Recolección:</b><br>Lun a Sáb 20hs (Húmedos)<br>Jueves 14hs (Reciclables)`,
         'hac_boleta': `<div class="info-card"><strong>📧 BOLETA DIGITAL</strong><br>🟢 WA: <a href="https://wa.me/5492241559739">2241-559739</a><br>📧 <a href="mailto:ingresospublicos@chascomus.gob.ar">Email</a></div>`,
@@ -253,19 +312,13 @@
         'hac_agua': `<b>💧 Consumo de Agua:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
         'hac_deuda': `<b>🔍 Consulta de Deuda:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas">CONSULTAR AQUÍ</a>`,
         'hac_hab': `🚀 <b>Habilitación Comercial:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/habilitaciones/habilitacionComercial.php">Iniciar Trámite</a>`,
-        'farmacias_lista': `<strong>📍 Farmacias en Chascomús:</strong><br><br>• <b>Alfonsín:</b> Libres del Sur 121<br>• <b>Aprile:</b> Av. Lastra 115<br>• <b>Batastini:</b> Cramer 70<br>• <b>Belgrano:</b> Belgrano 649<br>• <b>Bellingieri:</b> H. Yrigoyen 78<br>• <b>Cangialosi:</b> Garay 56<br>• <b>Chascomús:</b> Av. Lastra 350<br>• <b>Del Norte:</b> El Ombú 102<br>• <b>Farmasur:</b> Bahía Blanca 91<br>• <b>Malena:</b> Escribano y Machado<br>• <b>Moriset:</b> Av. Lastra 591<br>• <b>Oria:</b> Libres del Sur 413<br>• <b>Pasteur:</b> Libres del Sur 302<br>• <b>Pensa:</b> H. Yrigoyen 710<br>• <b>Pozzi:</b> Rioja 28<br>• <b>Puyssegur:</b> Libres del Sur 946<br><br><i>* Nota: Usá la opción "Turnos" para confirmar la guardia.</i>`,
-        'caps_wa': `<strong>📞 WhatsApp de los CAPS:</strong><br><br>🟢 <b>30 de Mayo:</b> <a href="https://wa.me/5492241588248">2241-588248</a><br>🟢 <b>Barrio Jardín:</b> <a href="https://wa.me/5492241498087">2241-498087</a><br>🟢 <b>San Luis:</b> <a href="https://wa.me/5492241604874">2241-604874</a><br>🟢 <b>El Porteño:</b> <a href="https://wa.me/5492241409316">2241-409316</a><br>🟢 <b>Gallo Blanco:</b> <a href="https://wa.me/5492241469267">2241-469267</a><br>🟢 <b>Iporá:</b> <a href="https://wa.me/5492241588247">2241-588247</a><br>🟢 <b>La Noria:</b> <a href="https://wa.me/5492241604872">2241-604872</a><br>🟢 <b>San Cayetano:</b> <a href="https://wa.me/5492241511430">2241-511430</a>`,
-        'caps_mapas': `<strong>📍 Ubicaciones CAPS:</strong><br><br>• CIC 30 de Mayo (Bvd. 5 y Calle 2)<br>• Barrio Jardín (Tucumán e/ Quintana)<br>• San Luis (Chubut 755)<br>• El Porteño (Lucio Mansilla)<br>• Gallo Blanco (Estados Unidos)<br>• Iporá (Sargento Cabral 387)<br>• La Noria (Grito de Dolores)<br>• San Cayetano (Gabino Ezeiza)`,
         'h_turnos': `<strong>📅 Turnos Hospital:</strong><br>WhatsApp: <a href="https://wa.me/5492241466977">2241-466977</a>`,
         'h_info': `📍 <b>Hospital Municipal:</b> Av. Alfonsín e Yrigoyen.<br>🚨 Guardia 24 hs.`,
         'esp_lunes': `<b>🩺 Lunes:</b> Pediatría, Ginecología, Clínica Médica.`,
         'esp_martes': `<b>🩺 Martes:</b> Cardiología, Traumatología, Pediatría.`,
         'esp_miercoles': `<b>🩺 Miércoles:</b> Obstetricia, Clínica Médica, Oftalmología.`,
         'esp_jueves': `<b>🩺 Jueves:</b> Nutrición, Pediatría, Cirugía.`,
-        'esp_viernes': `<b>🩺 Viernes:</b> Neurología, Clínica Médica, Psiquiatría.`,
-        'zoo_rabia': `<strong>🐾 Zoonosis:</strong> Mendoza 95.`,
-        'vacunacion_info': `💉 <b>VACUNACIÓN:</b> Hospital Municipal.<br>Lun a Vie 08:00 a 16:30.`,
-        'farmacias_turno': `💊 <a href="https://www.turnofarma.com/turnos/ar/ba/chascomus">Ver Farmacias de Turno</a>`
+        'esp_viernes': `<b>🩺 Viernes:</b> Neurología, Clínica Médica, Psiquiatría.`
     };
 
     /* --- LÓGICA DE INTERFAZ Y NAVEGACIÓN --- */
@@ -275,7 +328,6 @@
         modal.classList.toggle('show');
     }
 
-    // Cerrar modal si tocan afuera
     window.onclick = function(event) {
         const modal = document.getElementById('infoModal');
         if (event.target == modal) {
