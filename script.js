@@ -8,7 +8,9 @@ let formData = { tipo: "", ubicacion: "", descripcion: "" };
 /* --- MENÚS --- */
 const MENUS = {
     main: { 
-        title: (name) => `¡Hola <b>${name}</b>! 👋 Soy Julián el asistente virtual de Municipalidad de Chascomús. ¿Empecemos la recorrida?`, 
+        title: (name) => `¡Hola <b>${name}</b>! 👋 Soy Eva la asistente virtual de Municipalidad de Chascomús. ¿En que puedo ayudarte?
+        Puedes escribir palabras clave "casa, agua, foodtruck, caps.
+        Si simplemente la palabra "menu" par ver todo`, 
         options: [
             { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
             { id: 'politicas_comu', label: '🛍️ Módulos (alimentos)', type: 'leaf', apiKey: 'asistencia_social' },
@@ -813,7 +815,7 @@ function processInput() {
         
         setTimeout(() => {
             // 1. Saludo
-            addMessage(`¡Mucho gusto, <b>${userName}</b>! Soy Julián, tu asistente virtual. 🤖`, 'bot');
+            addMessage(`¡Mucho gusto, <b>${userName}</b>! Soy Eva, tu asistente virtual. 🤖`, 'bot');
             
             // 2. Definimos los botones de "Acceso Rápido"
             const atajos = [
