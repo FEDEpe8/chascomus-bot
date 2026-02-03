@@ -1,4 +1,4 @@
-const CACHE_NAME = 'muni-chascomus-v46'; // <--- Subí la versión para forzar actualización
+const CACHE_NAME = 'muni-chascomus-v47'; // <--- Subí la versión para forzar actualización
 const assets = [
   './',
   './index.html',
