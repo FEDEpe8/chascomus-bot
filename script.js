@@ -12,7 +12,7 @@ const MENUS = {
         options: [
             { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
             { id: 'politicas_comu', label: '🛍️ Módulos (alimentos)', type: 'leaf', apiKey: 'asistencia_social' },
-            { id: 'desarrollo_menu', label: '🤝 Desarrollo Social' },
+            { id: 'desarrollo_menu', label: '🤝 Acción Social' },
             { id: 'turismo', label: '🏖️ Turismo' },
             { id: 'deportes', label: '⚽ Deportes' },
             { id: 'salud', label: '🏥 Salud' },
@@ -24,7 +24,8 @@ const MENUS = {
             { id: 'cultura', label: '🎭 Cultura y Agenda', type: 'submenu' },
             { id: 'habitat', label: '🏡 Reg demanda Habitacional', type: 'submenu' },
             { id: 'contacto_op', label: '☎️ Hablar con Operador', type: 'leaf', apiKey: 'contacto_gral' },
-            { id: 'pago_deuda', label: '🅿️ago: Auto, Agua, Inmueble', type: 'submenu' }
+            // CORREGIDO: Ahora es tipo submenu para que abra las opciones de pago
+            { id: 'pago_deuda', label: '🅿️ Pago: Auto, Agua, Inmueble', type: 'submenu' }
         ]
     },
     cultura: {
@@ -49,8 +50,9 @@ const MENUS = {
         ]
     },
     desarrollo_menu: {
-        title: () => 'Desarrollo Social y Comunitaria:', 
+        title: () => 'Acción Social y Comunitaria:', 
         options: [
+            { id: 'asistencia', label: '🍎 Ayuda Alimentaria (CAM)', type: 'leaf', apiKey: 'asistencia_social' },
             { id: 'mediacion', label: '⚖️ Mediación Vecinal', type: 'leaf', apiKey: 'mediacion_info' },
             { id: 'uda', label: '📍 Puntos UDA', type: 'leaf', apiKey: 'uda_info' },
             { id: 'ninez', label: '👶 Niñez', type: 'leaf', apiKey: 'ninez' }
@@ -617,9 +619,14 @@ window.onclick = function(event) {
     }
 }
 
-function toggleInput(show) { 
-    document.getElementById('inputBar').classList.toggle('show', show);
-    if(show) setTimeout(() => document.getElementById('userInput').focus(), 100);
+// CORREGIDO: Función simplificada para solo poner foco, sin ocultar (Super Revisión)
+function toggleInput(focus = false) { 
+    if(focus) {
+        setTimeout(() => {
+            const input = document.getElementById('userInput');
+            if(input) input.focus();
+        }, 100);
+    }
 }
 
 function addMessage(text, side = 'bot', options = null) {
@@ -701,7 +708,7 @@ function handleAction(opt) {
 }
 
 function showMenu(key) {
-    //toggleInput(false); 
+    // toggleInput(false); // COMENTADO: Ya no ocultamos la barra
     const menu = MENUS[key];
     const title = typeof menu.title === 'function' ? menu.title(userName) : menu.title;
     
@@ -732,7 +739,7 @@ function showNavControls() {
 function startReclamoForm() {
     isAwaitingForm = true;
     currentFormStep = 1;
-    toggleInput(true); 
+    toggleInput(true); // Pone el foco para escribir
     setTimeout(() => addMessage("📝 <b>Paso 1/3:</b> ¿Qué tipo de problema es? (Ej: Luminaria, Basura)", 'bot'), 500);
 }
 
@@ -753,7 +760,9 @@ function processFormStep(text) {
 
 function finalizeForm() {
     isAwaitingForm = false;
-    toggleInput(false);
+    // toggleInput(false); // Eliminado para no ocultar
+    document.getElementById('userInput').blur(); // Solo bajamos el teclado
+    
     const tel147 = "5492241559397"; 
     
     // CORREGIDO: Usamos encodeURIComponent para asegurar que el link funcione en todos los dispositivos
@@ -943,7 +952,7 @@ document.getElementById('userInput').onkeypress = (e) => { if(e.key === 'Enter')
 window.onload = () => {
     if (!userName) {
         addMessage("👋 Bienvenido al asistente de Chascomús.<br>Para comenzar, por favor <b>ingresá tu nombre</b>:", 'bot');
-        toggleInput(true);
+        toggleInput(true); // Pone foco en el teclado
     } else {
         showMenu('main');
     }
