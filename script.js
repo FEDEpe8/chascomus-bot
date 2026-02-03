@@ -685,6 +685,16 @@ const RES = {
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSctX7eGQxBNei5howcIjXhIzlBTKQQb_RIBImnKXjVPvIVrvw/closedform" target="_blank" class="wa-btn">📝 INSCRIPCIÓN AL CURSO</a>
     </div>`,
 
+     'prod_contacto': `
+    <div class="info-card">
+        <strong>📍 Dirección de Producción</strong><br><br>
+        📍 <b>Dirección:</b> Maipú 415, Chascomús.<br>
+        📞 <b>Teléfonos:</b> <a href="tel:02241436365">43-6365</a> / <a href="tel:02241430841">43-0841</a><br>
+        📧 <a href="mailto:produccion@chascomus.gob.ar">produccion@chascomus.gob.ar</a><br><br>
+        ℹ️ <b>Atención:</b><br>
+        Orientación a productores de alimentos frescos, PYMES y cooperativas, impulsando la economía social y la agricultura familiar.
+    </div>`,
+
         'contacto_gral': `<div class="info-card">
     <strong>🏛️ Contacto Municipalidad</strong><br>
     <i>Canales de atención directa:</i><br><br>
