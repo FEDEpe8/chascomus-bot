@@ -5,7 +5,7 @@ let isAwaitingForm = false;
 let currentFormStep = 0;
 let formData = { tipo: "", ubicacion: "", descripcion: "" };
 
-/* --- MENÚS --- */
+/* --- MENÚS --- */  
 const MENUS = {
     main: { 
         title: (name) => `¡Hola <b>${name}</b>! 👋 Soy Eva la asistente virtual de la Municipalidad . ¿Empecemos la recorrida?`, 
@@ -13,6 +13,7 @@ const MENUS = {
             { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
             { id: 'politicas_comu', label: '🛍️ Módulos (alimentos)', type: 'leaf', apiKey: 'asistencia_social' },
             { id: 'desarrollo_menu', label: '🤝 Desarrollo Social' },
+            { id: 'sibon', label: '📰 Boletin Oficial' },
             { id: 'turismo', label: '🏖️ Turismo' },
             { id: 'deportes', label: '⚽ Deportes' },
             { id: 'salud', label: '🏥 Salud' },
@@ -21,7 +22,7 @@ const MENUS = {
             { id: 'produccion', label: '🏭 Producción y Empleo' },
             { id: 'habilitaciones', label: '💰 Habilitaciones' },
             { id: 'omic', label: '🏦 Denuncias Omic' },
-            { id: 'cultura', label: '🎭 Cultura y Agenda', type: 'submenu' },
+            { id: 'cultura', label: '🎭 Cultura y Agenda' },
             { id: 'habitat', label: '🏡 Reg demanda Habitacional', type: 'submenu' },
             { id: 'pago_deuda', label: '🅿️ago: Auto, Agua, Inmueble', type: 'submenu' },
             { id: 'contacto_op', label: '☎️ Hablar con Operador', type: 'leaf', apiKey: 'contacto_gral' }
@@ -31,6 +32,13 @@ const MENUS = {
         title: () => '🎭 Agenda Cultural:',
         options: [
             { id: 'ag_actual', label: '📅 Agenda del Mes (FEBRERO)', type: 'leaf', apiKey: 'agenda_actual' },
+        ]
+    },
+
+    sibon: {
+        title: () => '📰 Boletín Oficial de Chascomús:',
+        options: [
+            { id: 'sibon_link', label: '🔗 Ir al Boletín Oficial', link: 'https://sibom.slyt.gba.gob.ar/cities/31' }
         ]
     },
     turismo: {
@@ -148,12 +156,49 @@ const MENUS = {
         ]
     },
     
+    /* --- REEMPLAZAR ESTA SECCIÓN EN 'MENUS' --- */
     produccion: {
-        title: () => 'Producción y Empleo:',
+        title: () => '🏭 Producción y Empleo:',
         options: [
-            { id: 'prod_empleo', label: '👷 Oficina de Empleo', type: 'leaf', apiKey: 'prod_empleo' },
-            { id: 'prod_emprende', label: '🚀 Emprendedores (PUPAAs)', type: 'leaf', apiKey: 'prod_emprende' },
+            { id: 'prod_eco_social', label: '🟢 Economía Social', type: 'submenu' },
+            { id: 'prod_of_empleo', label: '🔵 Oficina de Empleo (Busco Trabajo)', type: 'submenu' },
+            { id: 'prod_empresas', label: '🟠 Empresas y Emprendedores', type: 'submenu' },
+            { id: 'prod_empleadores', label: '🟣 Empleadores (Busco Personal)', type: 'submenu' },
+            { id: 'prod_manipulacion', label: '🔴 Carnet Manipulación Alimentos', type: 'leaf', apiKey: 'res_manipulacion' },
             { id: 'prod_contacto', label: '📍 Contacto y Dirección', type: 'leaf', apiKey: 'prod_contacto' }
+        ]
+    },
+
+    /* --- AGREGAR ESTOS NUEVOS SUBMENÚS AL FINAL DE 'MENUS' --- */
+    prod_eco_social: {
+        title: () => '🟢 Economía Social:',
+        options: [
+            { id: 'pe_compre', label: '🤝 Compre Chascomús', type: 'leaf', apiKey: 'res_compre_chascomus' },
+            { id: 'pe_frescos', label: '🥦 Productores Alimentos Frescos', type: 'leaf', apiKey: 'res_prod_frescos' }
+        ]
+    },
+
+    prod_of_empleo: {
+        title: () => '🔵 Oficina de Empleo:',
+        options: [
+            { id: 'oe_inscripcion', label: '📝 Inscripción / Actualizar CV', type: 'leaf', apiKey: 'res_oe_inscripcion' },
+            { id: 'oe_promover', label: '♿ Programa Promover (Discapacidad)', type: 'leaf', apiKey: 'res_oe_promover' },
+            { id: 'oe_taller_cv', label: '📄 Taller Armado de CV', type: 'leaf', apiKey: 'res_oe_taller_cv' }
+        ]
+    },
+
+    prod_empresas: {
+        title: () => '🟠 Empresas y Emprendedores:',
+        options: [
+            { id: 'emp_chasco', label: '🚀 Chascomús Emprende', type: 'leaf', apiKey: 'res_emp_chasco' },
+        ]
+    },
+
+    prod_empleadores: {
+        title: () => '🟣 Empleadores:',
+        options: [
+            { id: 'empl_busqueda', label: '🔎 Publicar Búsqueda Laboral', type: 'leaf', apiKey: 'res_empl_busqueda' },
+            { id: 'empl_madrinas', label: '🤝 Empresas Madrinas', type: 'leaf', apiKey: 'res_empl_madrinas' }
         ]
     },
     obras: { 
@@ -556,36 +601,89 @@ const RES = {
         <a href="https://wa.me/5492241466977" target="_blank" class="wa-btn">📅 SOLICITAR TURNO</a>
     </div>`,
     
-    'prod_empleo': `
+   /* --- AGREGAR AL OBJETO 'RES' --- */
+
+    /* 🟢 ECONOMÍA SOCIAL */
+    'res_compre_chascomus': `
     <div class="info-card">
-        <strong>👷 Oficina de Empleo</strong><br><br>
-        Intermediación laboral y programas de capacitación.<br><br>
-        📋 <b>Servicios:</b><br>
-        • Bolsa de trabajo.<br>
-        • Programa "Jóvenes con Más y Mejor Trabajo".<br>
-        • Entrenamientos laborales.<br><br>
-        📍 <b>Sede:</b> Maipú 415.<br>
-        ⏰ <b>Horario:</b> Lun a Vie de 8 a 13 hs.
+        <strong>🤝 Compre Chascomús - Producción Local</strong><br><br>
+        Vinculamos a la economía social con comerciantes locales (Micro, Pequeños y Grandes) con habilitación.<br><br>
+        📋 <b>Requisitos para inscripción:</b><br>
+        Tener foto de: AFIP, ARBA, Habilitación Municipal y DNI.<br><br>
+        👇 <i>Completá el formulario y la Dirección de Producción te contactará:</i><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSfa4LPccR6dYwkQFWhG31HELnaKMCSgUF7Jqy1xfiSNR_fA_g/viewform" target="_blank" class="wa-btn">📝 FORMULARIO DE INSCRIPCIÓN</a>
     </div>`,
 
-    'prod_emprende': `
+    'res_prod_frescos': `
     <div class="info-card">
-        <strong>🚀 Chascomús Emprende</strong><br><br>
-        Apoyo a emprendedores y productores locales.<br><br>
-        🍞 <b>PUPAAs:</b><br>
-        Registro de Pequeñas Unidades Productivas de Alimentos Artesanales.<br><br>
-        🤝 <b>Compre Chascomús:</b><br>
-        Fomento al consumo de productos locales.<br><br>
-        📧 <b>Consultas:</b> <a href="mailto:produccion@chascomus.gob.ar">produccion@chascomus.gob.ar</a>
+        <strong>🥦 Orientación Productores Alimentos Frescos</strong><br><br>
+        Para productores de alimentos agroecológicos, agricultura familiar, cooperativas y PyMEs de Chascomús.<br><br>
+        <i>Acompañamos el desarrollo de tu unidad económica.</i><br><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSeMzImHt14uXF4ZSk3wiJEqfxK4U2Tw9bSJrJXaKGLv5kLGew/closedform" target="_blank" class="wa-btn">📝 FORMULARIO PRODUCTORES</a>
     </div>`,
 
-    'prod_contacto': `
+    /* 🔵 OFICINA DE EMPLEO */
+    'res_oe_inscripcion': `
     <div class="info-card">
-        <strong>🏭 Dirección de Producción</strong><br><br>
-        📍 <b>Dirección:</b> Maipú 415.<br>
-        📞 <b>Teléfono:</b> <a href="tel:02241436365">43-6365</a><br>
-        📧 <b>Email:</b> <a href="mailto:produccion@chascomus.gob.ar">produccion@chascomus.gob.ar</a><br><br>
-        ⏰ <b>Atención:</b> Lunes a Viernes de 8:00 a 13:30 hs.</div>`,
+        <strong>📝 Inscripción / Actualización Laboral</strong><br><br>
+        Para mayores de 18 años residentes en Chascomús en búsqueda activa.<br><br>
+        1. Completá el formulario con tus datos y perfil.<br>
+        2. Te contactaremos (Lun a Vie 8 a 14hs) para una entrevista y asesoramiento.<br><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSfl7uzaIU0u8G-S3uTjtddZl7y4o5jajZUzNuftZEyfqPdDKg/viewform" target="_blank" class="wa-btn">📝 CARGAR MI CV / DATOS</a>
+    </div>`,
+
+    'res_oe_promover': `
+    <div class="info-card">
+        <strong>♿ Programa Nacional Promover</strong><br><br>
+        Para mayores de 18 años desempleados que posean <b>Certificado Único de Discapacidad (CUD)</b>.<br><br>
+        Ofrece formación, capacitación y acompañamiento en el perfil laboral.<br><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSdGoPi4Xmg0zD2VtBzTr1sFol1QtLAM5G0oDA6vExM_cvIYbQ/viewform" target="_blank" class="wa-btn">📝 INSCRIPCIÓN PROMOVER</a>
+    </div>`,
+
+    'res_oe_taller_cv': `
+    <div class="info-card">
+        <strong>📄 Armado de CV y Búsqueda de Empleo</strong><br><br>
+        ¿No sabés por dónde empezar a buscar trabajo? ¿Querés mejorar tu Currículum?<br><br>
+        Te ofrecemos información y estrategias para tener la mejor herramienta de presentación.<br><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSdQkEPZZx7gXZXO9vAb7u3Klxj8g5cwSe1fXqz6Zmo4jjMNBg/viewform" target="_blank" class="wa-btn">📝 INSCRIBIRSE AL TALLER</a>
+    </div>`,
+
+    /* 🟠 EMPRESAS */
+
+    'res_emp_chasco': `
+    <div class="info-card">
+        <strong>🚀 Programa Chascomús Emprende</strong><br><br>
+        Objetivo: Fortalecer y acompañar unidades productivas.<br><br>
+        Al completar el formulario, ingresás al listado para coordinar una entrevista de diagnóstico y orientación.<br><br>
+        <a href="#https://uploads.chascomus.gob.ar/produccion/PROGRAMA%20CHASCOMUS%20EMPRENDE.pdf" target="_blank" class="wa-btn">📝 INSCRIPCIÓN EMPRENDEDORES</a>
+    </div>`,
+
+    /* 🟣 EMPLEADORES */
+    'res_empl_busqueda': `
+    <div class="info-card">
+        <strong>🔎 Búsqueda de Personal</strong><br><br>
+        Si sos empleador, completá el formulario describiendo el puesto.<br><br>
+        ✅ La Dirección de Producción realizará una preselección y te presentará una <b>terna final de candidatos</b>.<br><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSdOeVRsshYtc8JF-sTXyEqQgJl2hyTbxyfDPb0G7SsiGBMj_g/viewform" target="_blank" class="wa-btn">📝 PUBLICAR PUESTO</a>
+    </div>`,
+
+    'res_empl_madrinas': `
+    <div class="info-card">
+        <strong>🤝 Programa Formando Red - Empresas Madrinas</strong><br><br>
+        Vinculamos empresas con compromiso social que deseen capacitar a futuros trabajadores, favoreciendo la igualdad de oportunidades.<br><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSe7SA_eKKQw-EDuFU9pDBIE_nUjzLOX6AZrHI_KfO3bwufVSA/viewform" target="_blank" class="wa-btn">📝 QUIERO SER EMPRESA MADRINA</a>
+    </div>`,
+
+    /* 🔴 MANIPULACIÓN */
+    'res_manipulacion': `
+    <div class="info-card">
+        <strong>🔴 Carnet de Manipulación de Alimentos</strong><br><br>
+        Obligatorio (Código Alimentario Argentino) para quien elabore, transporte o comercialice alimentos.<br><br>
+        ✅ <b>Validez:</b> 3 años (Nacional).<br>
+        🎓 <b>Requisito:</b> Aprobar el Curso de Manipulación Segura.<br><br>
+        <i>Modalidad presencial (y próximamente virtual).</i><br><br>
+        <a href="#https://docs.google.com/forms/d/e/1FAIpQLSctX7eGQxBNei5howcIjXhIzlBTKQQb_RIBImnKXjVPvIVrvw/closedform" target="_blank" class="wa-btn">📝 INSCRIPCIÓN AL CURSO</a>
+    </div>`,
 
         'contacto_gral': `<div class="info-card">
     <strong>🏛️ Contacto Municipalidad</strong><br>
@@ -596,7 +694,7 @@ const RES = {
     
     📲 <b>WhatsApp Operador:</b><br>
     Consultas y reclamos.<br>
-    <a href="https://wa.me/5492241559397" class="wa-btn" style="text-align:center;">💬 CHATEAR AHORA</a><br>
+    <a href="https://wa.me/5492241000000" class="wa-btn" style="text-align:center;">💬 CHATEAR AHORA</a><br>
     
     📍 <b>Mesa de Entradas:</b><br>
     Cr. Cramer 270.</div>`
@@ -975,3 +1073,4 @@ console.log("%cEste código es propiedad intelectual de la Municipalidad de Chas
     window.addEventListener('load', _secure);
     setInterval(_secure, 2000);
 })();
+
