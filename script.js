@@ -8,7 +8,7 @@ let formData = { tipo: "", ubicacion: "", descripcion: "" };
 /* --- MENÚS --- */  
 const MENUS = {
     main: { 
-        title: (name) => `¡Hola <b>${name}</b>! 👋 Soy Eva la asistente virtual de la Municipalidad. ¿Empecemos la recorrida?`, 
+        title: (name) => `¡Hola <b>${name}</b>! 👋 Soy MuniBot el asistente virtual de la Municipalidad. ¿Empecemos la recorrida?`, 
         options: [
             { id: 'politicas_gen', label: '💜 GÉNERO (Urgencias)', type: 'leaf', apiKey: 'politicas_gen' },
             { id: 'politicas_comu', label: '🛍️ Módulos (alimentos)', type: 'leaf', apiKey: 'asistencia_social' },
@@ -780,6 +780,24 @@ function addMessage(text, side = 'bot', options = null) {
     }
 }
 
+/* --- FRASES DE RESPUESTA POSITIVA --- */
+const FRASES_RESPUESTA = [
+    "¡Qué gran elección! 🎯",
+    "¡Excelente selección! ⭐",
+    "¡Perfecto! Esa es una opción muy buena 👍",
+    "¡Muy bien! Ahí vamos... 🚀",
+    "¡Genial! Te ayudo con eso 😊",
+    "¡Perfecta elección! 💯",
+    "¡Buena opción! Vamos a ver... 🔍",
+    "¡Eso me gusta! Procedamos... 💪",
+    "¡Fantástico! Un momento... ⏳",
+    "¡Muy buena elección! 🌟"
+];
+
+function getFraseAleatoria() {
+    return FRASES_RESPUESTA[Math.floor(Math.random() * FRASES_RESPUESTA.length)];
+}
+
 function handleAction(opt) {
     if (opt.id === 'nav_home') return resetToMain();
     if (opt.id === 'nav_back') {
@@ -816,16 +834,26 @@ function handleAction(opt) {
 
     if (opt.type === 'leaf' || opt.apiKey) {
         const content = RES[opt.apiKey] || "Información no disponible.";
+        const frase = getFraseAleatoria();
         setTimeout(() => {
-            addMessage(content, 'bot');
-            showNavControls(); 
-        }, 500);
+            addMessage(frase, 'bot');
+            setTimeout(() => {
+                addMessage(content, 'bot');
+                showNavControls(); 
+            }, 600);
+        }, 400);
         return;
     }
 
     if (MENUS[opt.id]) {
-        currentPath.push(opt.id);
-        showMenu(opt.id);
+        const frase = getFraseAleatoria();
+        setTimeout(() => {
+            addMessage(frase, 'bot');
+            setTimeout(() => {
+                currentPath.push(opt.id);
+                showMenu(opt.id);
+            }, 500);
+        }, 300);
     }
 }
 
@@ -943,7 +971,7 @@ function processInput() {
         input.value = "";
         
         setTimeout(() => {
-            addMessage(`¡Mucho gusto, <b>${userName}</b>! 👋 Soy Eva la asistente virtual de Municipalidad de Chascomús. ¿En que puedo ayudarte?
+            addMessage(`¡Mucho gusto, <b>${userName}</b>! 👋 Soy MuniBot, el asistente virtual de Municipalidad de Chascomús. ¿En que puedo ayudarte?
         Puedes escribir frases que tengan palabras clave como "casa, agua, foodtruck, caps".
         Te doy un ej; "Como habilito mi local", "puedo ver mi consumo de agua", etc.
         O simplemente la palabra "MENU" para ver todo 🤖`, 'bot');
@@ -1041,8 +1069,8 @@ function processInput() {
         'trabajo':    { id: 'produccion', label: '👷 Producción y Empleo' },        
         'curriculum': { id: 'produccion', label: '👷 Producción y Empleo' },
         'cv':         { id: 'produccion', label: '👷 Producción y Empleo' },
-        'boletin':     { id: 'sibon', label: '📰 Boletín Oficial' },
-        'oficial':     { id: 'sibon', label: '📰 Boletín Oficial' },
+        'boletin':    { id: 'sibon', label: '📰 Boletín Oficial' },
+        'oficial':    { id: 'sibon', label: '📰 Boletín Oficial' },
         'diario':     { id: 'el_digital', label: '📰 Diario Digital' },
         'digital':    { id: 'el_digital', label: '📰 Diario Digital' }
     };
