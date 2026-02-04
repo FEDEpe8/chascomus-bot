@@ -985,7 +985,7 @@ function processInput() {
     
     const diccionario = {
         // PALABRA CLAVE      // QUÉ BOTÓN ACTIVA
-        'farmacia':   { type: 'leaf', apiKey: 'farmacias_lista', label: '💊 Farmacias' },
+       'farmacia':   { type: 'leaf', apiKey: 'farmacias_lista', label: '💊 Farmacias' },
         'agenda':     { type: 'leaf', apiKey: 'agenda_actual', label: '🎭 Agenda Cultural' },
         'cultural':   { type: 'leaf', apiKey: 'agenda_actual', label: '🎭 Agenda Cultural' },
         'teatro':     { type: 'leaf', apiKey: 'agenda_actual', label: '🎭 Agenda Cultural' },
@@ -1019,12 +1019,20 @@ function processInput() {
         'carro':      { type: 'leaf', apiKey: 'hab_espacio', label: '🍔 Uso de Espacio Público' },
         'local':      { type: 'leaf', apiKey: 'hab_gral', label: '🏢 Habilitación Comercial' },  
         'comercio':   { type: 'leaf', apiKey: 'hab_gral', label: '🏢 Habilitación Comercial' },
-        // CORREGIDO: Claves arregladas para coincidir con RES (antes hac_agua y hac_boleta)
         'medidor':    { type: 'leaf', apiKey: 'agua', label: '💧 Consumo de Agua'  }, 
         'agua':       { type: 'leaf', apiKey: 'agua', label: '💧 Consumo de Agua'  }, 
         'boleta':     { type: 'leaf', apiKey: 'boleta', label: '📧 Boleta Digital' },
         'tomasa':     { type: 'leaf', apiKey: 'hac_tomasa', label: '📧 Tomasa' },
-        'casa':       { type: 'leaf', apiKey: 'habitat_info', label: '🏢 Habilitación Habitacional'  }
+        'casa':       { type: 'leaf', apiKey: 'habitat_info', label: '🏢 Habilitación Habitacional'  },
+        'vivienda':   { type: 'leaf', apiKey: 'habitat_info', label: '🏢 Habilitación Habitacional'  },       
+        'denuncia':   { id: 'omic', label: '🏦 Denuncias Omic' },
+        'consumidor': { id: 'omic', label: '🏦 Denuncias Omic' },
+        'barrio':     { id: 'vecinales', label: '🏘️ Vecinales' },
+        'empleo':     { id: 'produccion_menu', label: '👷 Producción y Empleo' },
+        'curriculum': { id: 'produccion_menu', label: '👷 Producción y Empleo' },
+        'cv':         { id: 'produccion_menu', label: '👷 Producción y Empleo' },
+        'diario':      { type: 'leaf', apiKey: 'diario_oficial', label: '📰 Diario Oficial' },
+        'discapacidad': { id: 'discapacidad', label: '♿ Discapacidad' }
     };
     
     // El bot revisa si alguna palabra clave está en lo que escribió el usuario
