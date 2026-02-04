@@ -14,6 +14,7 @@ const MENUS = {
             { id: 'politicas_comu', label: '🛍️ Módulos (alimentos)', type: 'leaf', apiKey: 'asistencia_social' },
             { id: 'desarrollo_menu', label: '🤝 Desarrollo Social' },
             { id: 'sibon', label: '📰 Boletin Oficial' },
+            { id: 'el_digital', label: '📰 Diario digital' },
             { id: 'turismo', label: '🏖️ Turismo' },
             { id: 'deportes', label: '⚽ Deportes' },
             { id: 'salud', label: '🏥 Salud' },
@@ -32,6 +33,13 @@ const MENUS = {
         title: () => '🎭 Agenda Cultural:',
         options: [
             { id: 'ag_actual', label: '📅 Agenda del Mes (FEBRERO)', type: 'leaf', apiKey: 'agenda_actual' },
+        ]
+    },
+
+     el_digital: {
+        title: () => '📰 Diario digital:',
+        options: [
+            { id: 'digital_link', label: '🔗 Ir al Diario Digital', link: 'https://www.eldigitalchascomus.com.ar/' }
         ]
     },
 
