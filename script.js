@@ -1030,7 +1030,7 @@ function processInput() {
         'barrio':     { id: 'vecinales', label: '🏘️ Vecinales' },
         'empleo':     { id: 'produccion_menu', label: '👷 Producción y Empleo' },
         'curriculum': { id: 'produccion_menu', label: '👷 Producción y Empleo' },
-        'cv':         { id: 'produccion_menu', label: '👷 Producción y Empleo' },
+        'cv':         { id: 'produccion_menu', label: '👷 Inscripción/ActualizarCV' },
         'diario':      { type: 'leaf', apiKey: 'diario_oficial', label: '📰 Diario Oficial' },
         'discapacidad': { id: 'discapacidad', label: '♿ Discapacidad' }
     };
