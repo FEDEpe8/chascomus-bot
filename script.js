@@ -419,12 +419,12 @@ const RES = {
         <strong>📲 Aplicaciones de Seguridad y Tránsito</strong><br><br>
         🔔 <b>BASAPP (Alerta Vecinal):</b><br>
         Botón antipánico y reportes.<br>
-        🤖 <a href="https://play.google.com/store/apps/details?id=ar.com.basapp.android.client" target="_blank" rel="noopener noreferrer">Descargar Android</a><br>
+        🤖 <a href="https://play.google.com/store/apps/details?id=com.basapp.app" target="_blank" rel="noopener noreferrer">Descargar Android</a><br>
         🍎 <a href="https://apps.apple.com/ar/app/basapp/id1453051463" target="_blank" rel="noopener noreferrer">Descargar iPhone</a><br><br>
         
         🅿️ <b>SEM (Estacionamiento Medido):</b><br>
         Gestioná tu estacionamiento.<br>
-        🤖 <a href="https://play.google.com/store/apps/details?id=ar.edu.unlp.sem.mobile" target="_blank" rel="noopener noreferrer">Descargar Android</a><br>
+        🤖 <a href="hthttps://play.google.com/store/apps/details?id=ar.edu.unlp.semmobile" target="_blank" rel="noopener noreferrer">Descargar Android</a><br>
         🍎 <a href="https://apps.apple.com/ar/app/sem-mobile/id1387705895" target="_blank" rel="noopener noreferrer">Descargar iPhone</a></div>`,
     'turismo_info': `<div class="info-card"><strong>🏖️ Subsecretaría de Turismo</strong><br>📍 Av. Costanera España 25<br>📞 <a href="tel:02241615542">02241 61-5542</a><br>📧 <a href="mailto:turismo@chascomus.gob.ar">Enviar Email</a><br>🔗 <a href="https://linktr.ee/turismoch" target="_blank">Más info en Linktree</a></div>`,
     'deportes_info': `<div class="info-card"><strong>⚽ Dirección de Deportes</strong><br>📍 Av. Costanera España y Av. Lastra<br>📞 <a href="tel:02241424649">(02241) 42 4649</a></div>`,
