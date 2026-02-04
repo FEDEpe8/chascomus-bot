@@ -766,7 +766,18 @@ function addMessage(text, side = 'bot', options = null) {
     }
     
     container.appendChild(row);
-    setTimeout(() => { container.scrollTop = container.scrollHeight; }, 100);
+    
+    // Scroll suave al nuevo mensaje con delay para asegurar renderizado
+    setTimeout(() => {
+        row.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+    
+    // Scroll adicional si hay botones para asegurar que sean visibles
+    if (options) {
+        setTimeout(() => {
+            container.scrollTop = container.scrollHeight;
+        }, 300);
+    }
 }
 
 function handleAction(opt) {
@@ -839,9 +850,15 @@ function showNavControls() {
     `;
     container.appendChild(div);
     
+    // Scroll suave para mostrar los botones de navegación
+    setTimeout(() => {
+        div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }, 100);
+    
+    // Scroll adicional para asegurar visibilidad completa
     setTimeout(() => {
         container.scrollTop = container.scrollHeight;
-    }, 150);
+    }, 300);
 }
 
 /* --- FORMULARIO 147 --- */
@@ -1088,4 +1105,3 @@ const app = {
 /* --- Mensaje en consola --- */
 console.log("%c⛔ DETENTE", "color: red; font-size: 40px; font-weight: bold;");
 console.log("%cEste código es propiedad intelectual de la Municipalidad de Chascomús.", "font-size: 16px; color: #004a7c;");
-
