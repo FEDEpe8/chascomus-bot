@@ -159,7 +159,6 @@ const MENUS = {
             { id: 'lic_tramite', label: '🪪 Licencia (Carnet)', type: 'leaf', apiKey: 'lic_turno' },
             { id: 'seg_academia', label: '🚗 Academia Conductores', type: 'leaf', apiKey: 'seg_academia' },
             { id: 'seg_infracciones', label: '⚖️ Mis Infracciones', type: 'leaf', apiKey: 'seg_infracciones' },
-            { id: 'ojos', label: '👁️ Ojos en Alerta', type: 'leaf', apiKey: 'ojos' },
             { id: 'poli', label: '📞 Comisaría', type: 'leaf', apiKey: 'poli' }
         ]
     },
@@ -340,7 +339,7 @@ const RES = {
         📞 <b>Teléfono (Línea 147):</b><br>
         Lun a Vie de 8 a 15 horas.<br><br>
         📋 <b>Datos necesarios:</b><br>
-        Nombre, DNI, Teléfono y Dirección del problema.
+        Nombre, DNI, Teléfono, Dirección del problema y adjuntar foto o archivo.
     </div>`,
 
     'caps_mapas': `
@@ -436,9 +435,18 @@ const RES = {
         </a>
     </div>`,
 
-    'ojos_en_alerta': `👁️ <b>Ojos en Alerta:</b> <a href="https://wa.me/5492241557444">2241-557444</a>`,
+     'ojos_en_alerta': `
+    <div class="info-card">
+        <strong>👀 OJOS(En alerta)</strong><br>
+        Programa de seguridad ciudadana.<br><br>
+        ⚖️ <b>Denuncias, Robo, Accidentes, Actitudes sospechosas, etc;.:</b><br>
+        Protección de derechos del ciudadano.<br><br>
+        📍 <b>Dirección:</b> Arenales y Julian quintana).<br>
+        ⏰ <b>Horario:</b> Lunes a Lunes 24hs.<br>
+        <a href="https://wa.me/5492241557444">2241-557444</a><br><br>
+       
+    </div>`,
     
-
     'mediacion_info': `<div class="info-card"><strong>⚖️ Mediación Comunitaria</strong><br>Resolución pacífica y gratuita de conflictos vecinales (ruidos, mascotas, edilicios).<br>📍 <b>Acercate a:</b> Moreno 259.</div>`,
     'uda_info': `<div class="info-card"><strong>📍 Puntos UDA (Atención en Barrios)</strong><br><i>Acercate a tu punto más cercano:</i><br><br>🔹 <b>UDA 1 (San Luis):</b> Chubut 755 (Mar/Vie 9-12).<br>🔹 <b>UDA 2 (San José Obrero):</b> F. Chapa 625 (Mar/Vie 9-12).<br>🔹 <b>UDA 3 (El Porteño):</b> Mansilla y Calle 3 (Vie 9-12).<br>🔹 <b>UDA 4 (30 de Mayo):</b> Bvd. 5 y Calle 2 (Vie 9-12).<br>🔹 <b>UDA 5 (B. Jardín):</b> J. Quintana e/ Misiones (Mar/Mié 9-12).<br>🔹 <b>UDA 6 (Gallo Blanco):</b> EE.UU. y Las Flores (Lun 9-12).<br>🔹 <b>UDA 7 (San Cayetano):</b> Comedor (Mar 9-12).<br>🔹 <b>UDA 8 (Políticas Com.):</b> Sarmiento 42 (Lun-Vie 8-12).<br>🔹 <b>UDA 9 (Iporá):</b> Perú y S. Cabral (Jue 9-12).<br><br>🚨 <b>Guardia 24hs:</b> <a href="https://wa.me/5492241559397">2241-559397</a></div>`,
     'pamuv': `<div class="info-card" style="border-left: 5px solid #c0392b;"><strong style="color: #c0392b;">🆘 PAMUV (Asistencia a la Víctima)</strong><br><br>Atención, contención y asesoramiento a personas víctimas de delitos o situaciones de violencia.<br><br>🛡️ <b>Plan Integral de Seguridad 2025-2027</b><br><br>🚨 <b>ATENCIÓN 24 HORAS:</b><br>Línea permanente para emergencias o consultas.<br><a href="https://wa.me/5492241514881" class="wa-btn" style="background-color: #c0392b !important;">📞 2241-514881 (WhatsApp)</a></div>`,
@@ -505,9 +513,12 @@ const RES = {
     'hac_tomasa': `<b>🤖 Hacienda Tomasa:</b><br>Portal de autogestión.<br>🔗 <a href="https://tomasa.chascomus.gob.ar/">INGRESAR</a>`, 
 
 
-    'boleta': `<div class="info-card"><strong>📧 BOLETA DIGITAL</strong><br>🟢 WA: <a href="https://wa.me/5492241557616">2241-557616</a><br>📧 <a href="mailto:ingresospublicos@chascomus.gob.ar">Email</a></div>`,
-    'agua': `<b>💧 Consumo de Agua:</b><br>🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
-    'deuda': `<b>🔍 Consulta de Deuda:</b><br>🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas">CONSULTAR AQUÍ</a>`,
+    'boleta': `<div class="info-card"><strong>📧 BOLETA DIGITAL</strong><br>🟢 <i>Para inscribirse comomunicarce por estas vias</a><br> 
+    📲: <a href="https://wa.me/5492241557616">2241-557616</a><br>📧 <a href="mailto:ingresospublicos@chascomus.gob.ar">Email</a></div>`,
+    'agua': `<div class="info-card"><strong>💧 Consumo de Agua:</b><br> ℹ️ Para conocer y pagar su consumo ingrese a este Link</b><br>
+    🔗 <a href="https://apps.chascomus.gob.ar/caudalimetros/consulta.php">VER MI CONSUMO</a>`, 
+    'deuda': `<div class="info-card"><strong>🔍 Consulta de Deuda:</b><br>💸 Para ver sus inpuesto Inmobiliarios, Automotores, etc;.<br>
+    🔗 <a href="https://chascomus.gob.ar/municipio/estaticas/consultaDeudas">CONSULTAR AQUÍ</a>`,
     
     'hab_gral': `
     <div class="info-card">
@@ -942,7 +953,10 @@ function processFormStep(text) {
         formData.ubicacion = text;
         currentFormStep = 3;
         setTimeout(() => addMessage("🖊️ <b>Paso 3/3:</b> Breve descripción del problema.", 'bot'), 500);
+        formData.descripcion = text;
     } else if (currentFormStep === 3) {
+         setTimeout(() => addMessage("🖊️ <b>Paso 4/4:</b> Si puede adjunte una foto o archivo.", 'bot'), 500);
+    } else if (currentFormStep === 4) {
         formData.descripcion = text;
         finalizeForm();
     }
@@ -951,7 +965,7 @@ function processFormStep(text) {
 function finalizeForm() {
     isAwaitingForm = false;
     toggleInput(false);
-    const tel147 = "5492241559397"; 
+    const tel147 = "5492241514700"; 
     
     const msg = `🏛️ *RECLAMO 147* 🏛️\n👤 *Vecino:* ${userName}\n🏷️ *Tipo:* ${formData.tipo}\n📍 *Ubicación:* ${formData.ubicacion}\n📝 *Desc:* ${formData.descripcion}`;
     const url = `https://wa.me/${tel147}?text=${encodeURIComponent(msg)}`;
@@ -987,7 +1001,7 @@ function processInput() {
             Este sistema fue diseñado y programado por:<br>
             <b>Federico de Sistemas</b><br>
             <i>Municipalidad de Chascomús</i><br>
-            © 2024 - Todos los derechos reservados.
+            © 2026 - Todos los derechos reservados.
         </div>`;
         addMessage(val, 'user');
         setTimeout(() => addMessage(firma, 'bot'), 500);
@@ -1056,7 +1070,7 @@ function processInput() {
     }
 
     // 4. INSULTOS (Filtro de educación)
-    if (['boludo', 'tonto', 'inutil', 'mierda', 'puto' , 'forro' , 'estupido'].some(palabra => texto.includes(palabra))) {
+    if (['boludo', 'tonto', 'inutil', 'mierda', 'puto' , 'forro' , 'estupido' , 'tarado'].some(palabra => texto.includes(palabra))) {
         setTimeout(() => addMessage("Por favor, mantengamos el respeto. Soy un robot intentando ayudar. 🤖💔", 'bot'), 600);
         return;
     }
@@ -1079,7 +1093,7 @@ function processInput() {
         'poda':       { type: 'leaf', apiKey: 'poda', label: '🌿 Poda' },
         'deporte':    { id: 'deportes', label: '⚽ Deportes' },           
         'turismo':    { id: 'turismo', label: '🏖️ Turismo' },            
-        'reba_hab':   { type: 'leaf', apiKey: 'hab_reba', label: '🍷 REBA' },
+        'reba':   { type: 'leaf', apiKey: 'hab_reba', label: '🍷 REBA' },
         'licencia':   { type: 'leaf', apiKey: 'lic_turno', label: '🪪 Licencias' },
         'carnet':     { type: 'leaf', apiKey: 'lic_turno', label: '🪪 Licencias' },
         'castracion': { type: 'leaf', apiKey: 'zoo_rabia', label: '🐾 Zoonosis' },
@@ -1090,7 +1104,6 @@ function processInput() {
         'salud':      { id: 'salud', label: '🏥 Menú Salud' },         
         'seguridad':  { id: 'seguridad', label: '🛡️ Menú Seguridad' }, 
         'clima':      { type: 'leaf', apiKey: 'defensa_civil', label: '🌪️ Defensa Civil' },
-        'reba':       { type: 'leaf', apiKey: 'hab_reba', label: '🍷 REBA' },
         'espacio':    { type: 'leaf', apiKey: 'hab_espacio', label: '🍔 Uso de Espacio Público' },
         'evento':     { type: 'leaf', apiKey: 'hab_espacio', label: '🍔 Uso de Espacio Público' },
         'fiesta':     { type: 'leaf', apiKey: 'hab_espacio', label: '🍔 Uso de Espacio Público' },
@@ -1174,3 +1187,5 @@ const app = {
 /* --- Mensaje en consola --- */
 console.log("%c⛔ DETENTE", "color: red; font-size: 40px; font-weight: bold;");
 console.log("%cEste código es propiedad intelectual de la Municipalidad de Chascomús.", "font-size: 16px; color: #004a7c;");
+console.log("%cSi alguien te indicó que pegues algo aquí, es una estafa para robarte información o dinero.", "font-size: 14px; color: #000;");
+console.log("%cSi sos desarrollador, podés contactarte con Federico de Sistemas para colaborar en proyectos oficiales.", "font-size: 14px; color: #000;");
