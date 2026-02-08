@@ -124,11 +124,6 @@ body {
     padding: 10px 16px;
     padding-bottom: max(10px, var(--safe-bottom));
     border-top: 1px solid #e5e7eb;
-    .input-area {
-    background: var(--bg-card);
-    padding: 10px 16px;
-    padding-bottom: max(10px, var(--safe-bottom));
-    border-top: 1px solid #e5e7eb;
     flex-shrink: 0; /* AÑADE ESTA LÍNEA */
 }
     background: #f3f4f6;
