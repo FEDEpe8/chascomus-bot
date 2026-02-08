@@ -1063,7 +1063,7 @@ function toggleInput(show) { document.getElementById('inputBar').style.display =
 function toggleInfo() { document.getElementById('infoModal').classList.toggle('show'); }
 function clearSession() { if(confirm("¿Borrar datos?")) { localStorage.clear(); location.reload(); } }
 
-window.onload = () => { if (!userName) { showTyping(); setTimeout(() => addMessage("👋 Bienvenido. Para empezar, ¿cómo es tu <b>nombre</b>?", 'bot'), 600); } else resetToMain(); };
+window.onload = () => { if (!userName) { showTyping(); setTimeout(() => addMessage("👋 Bienvenido. Para empezar, ¿cual es tu <b>nombre</b>?", 'bot'), 600); } else resetToMain(); };
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
 
